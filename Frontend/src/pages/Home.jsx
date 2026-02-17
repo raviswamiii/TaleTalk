@@ -22,35 +22,36 @@ export const Home = () => {
     { id: 8, name: "Game name", img: game8 },
   ];
   return (
-    <div className="h-screen bg-[#0B090A]">
-      <div className="bg-[#161214] text-white px-3 py-2 flex items-center justify-between">
-        <div className="flex gap-4">
+    <div className="min-h-screen bg-[#0B090A] flex flex-col">
+      <div className="bg-[#161214] text-white px-4 py-3 flex items-center justify-between">
+        <div className="flex gap-4 items-center">
           <HiMenuAlt2 className="text-2xl" />
-          <h1 className="font-semibold">Tale Talk</h1>
+          <h1 className="font-semibold text-lg">Tale Talk</h1>
         </div>
         <MdManageAccounts className="text-2xl" />
       </div>
 
-      <div className="p-9 grid grid-cols-2 gap-6 overflow-y-scroll h-[90vh] ">
-        {games.map((game) => {
-          return (
+      <div className="flex-1 overflow-y-auto p-9 sm:p-10 md:p-11 lg:p-12">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+          {games.map((game) => (
             <div
               key={game.id}
-              className="relative h-[27vh] rounded-lg overflow-hidden hover:scale-105 transition-transform duration-300 cursor-pointer"
+              className="relative h-48 sm:h-56 md:h-60 rounded-xl overflow-hidden hover:scale-105 transition-transform duration-300 cursor-pointer"
             >
               <img
                 src={game.img}
                 alt={game.name}
                 className="w-full h-full object-cover"
               />
-              <div className="absolute bottom-0 flex justify-center w-full">
-                <p className="bg-black/60 backdrop-blur-md text-white text-xs font-semibold px-4 py-1 rounded-full shadow-lg tracking-wide whitespace-nowrap mb-1">
+
+              <div className="absolute bottom-2 w-full flex justify-center">
+                <p className="bg-black/60 backdrop-blur-md text-white text-xs sm:text-sm font-semibold px-4 py-1 rounded-full shadow-lg whitespace-nowrap">
                   {game.name}
                 </p>
               </div>
             </div>
-          );
-        })}
+          ))}
+        </div>
       </div>
     </div>
   );
