@@ -9,10 +9,11 @@ import game5 from "../assets/JK.jpg";
 import game6 from "../assets/Kageyama.jpg";
 import game7 from "../assets/ppnaravit.jpg";
 import game8 from "../assets/image8.jpg";
+import { Link } from "react-router-dom";
 
 export const Home = () => {
   const games = [
-    { id: 1, name: "Game ", img: game1 },
+    { id: 1, name: "Wordle", img: game1, link: "/gameOne" },
     { id: 2, name: "Game name", img: game2 },
     { id: 3, name: "Game name", img: game3 },
     { id: 4, name: "Game name", img: game4 },
@@ -34,7 +35,8 @@ export const Home = () => {
       <div className="flex-1 overflow-y-auto p-9 sm:p-10 md:p-11 lg:p-12">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
           {games.map((game) => (
-            <div
+            <Link
+              to={game.link || "#"}
               key={game.id}
               className="relative h-48 sm:h-56 md:h-60 rounded-xl overflow-hidden hover:scale-105 transition-transform duration-300 cursor-pointer"
             >
@@ -49,7 +51,7 @@ export const Home = () => {
                   {game.name}
                 </p>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
