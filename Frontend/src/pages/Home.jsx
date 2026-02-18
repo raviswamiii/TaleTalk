@@ -13,7 +13,7 @@ import { Link } from "react-router-dom";
 
 export const Home = () => {
   const games = [
-    { id: 1, name: "Wordle", img: game1, link: "/gameOne" },
+    { id: 1, name: "Question Generator", img: game1, link: "/gameOne" },
     { id: 2, name: "Game name", img: game2 },
     { id: 3, name: "Game name", img: game3 },
     { id: 4, name: "Game name", img: game4 },
@@ -23,8 +23,8 @@ export const Home = () => {
     { id: 8, name: "Game name", img: game8 },
   ];
   return (
-    <div className="min-h-screen bg-[#0B090A] flex flex-col">
-      <div className="bg-[#161214] text-white px-4 py-3 flex items-center justify-between">
+    <div className="h-screen bg-[#0B090A] flex flex-col">
+      <div className="bg-[#161214] text-white px-3 py-3 flex items-center justify-between">
         <div className="flex gap-4 items-center">
           <HiMenuAlt2 className="text-2xl" />
           <h1 className="font-semibold text-lg">Tale Talk</h1>
@@ -32,28 +32,26 @@ export const Home = () => {
         <MdManageAccounts className="text-2xl" />
       </div>
 
-      <div className="flex-1 overflow-y-auto p-9 sm:p-10 md:p-11 lg:p-12">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-          {games.map((game) => (
-            <Link
-              to={game.link || "#"}
-              key={game.id}
-              className="relative h-48 sm:h-56 md:h-60 rounded-xl overflow-hidden hover:scale-105 transition-transform duration-300 cursor-pointer"
-            >
-              <img
-                src={game.img}
-                alt={game.name}
-                className="w-full h-full object-cover"
-              />
+      <div className="overflow-y-auto p-9 sm:p-10 md:p-11 lg:p-12 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+        {games.map((game) => (
+          <Link
+            to={game.link || "#"}
+            key={game.id}
+            className="relative h-48 sm:h-56 md:h-60 rounded-xl overflow-hidden hover:scale-105 transition-transform duration-300 cursor-pointer"
+          >
+            <img
+              src={game.img}
+              alt={game.name}
+              className="w-full h-full object-cover"
+            />
 
-              <div className="absolute bottom-2 w-full flex justify-center">
-                <p className="bg-black/60 backdrop-blur-md text-white text-xs sm:text-sm font-semibold px-4 py-1 rounded-full shadow-lg whitespace-nowrap">
-                  {game.name}
-                </p>
-              </div>
-            </Link>
-          ))}
-        </div>
+            <div className="absolute bottom-2 w-full flex justify-center">
+              <p className="bg-black/60 backdrop-blur-md text-white text-xs sm:text-sm font-semibold px-4 py-1 rounded-full shadow-lg whitespace-nowrap truncate max-w-27.5 sm:max-w-50 md:max-w-40 xl:max-w-55">
+                {game.name}
+              </p>
+            </div>
+          </Link>
+        ))}
       </div>
     </div>
   );
