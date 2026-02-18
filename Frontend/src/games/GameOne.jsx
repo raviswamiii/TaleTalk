@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { HiMenuAlt2 } from "react-icons/hi";
+import { RiAddLine } from "react-icons/ri";
+import { Link } from "react-router-dom";
 
 export const GameOne = () => {
   const newQuestions = [
@@ -22,9 +24,14 @@ export const GameOne = () => {
 
   return (
     <div className="relative h-screen bg-[#0B090A] flex flex-col">
-      <div className="flex gap-4 items-center bg-[#161214] text-white px-3 py-3">
-        <HiMenuAlt2 className="text-2xl" />
-        <h1 className="font-semibold text-lg">Question Generator</h1>
+      <div className="bg-[#161214] text-white px-3 py-3 flex items-center justify-between">
+        <div className="flex gap-4 items-center">
+          <HiMenuAlt2 className="text-2xl" />
+          <h1 className="font-semibold text-lg">Question Generator</h1>
+        </div>
+        <Link to="/addQuestions" className="text-white">
+          <RiAddLine className="text-2xl" />
+        </Link>
       </div>
 
       <div className="h-screen p-6 overflow-y-scroll">
