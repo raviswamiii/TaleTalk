@@ -34,7 +34,11 @@ export const addQuestion = async (req, res) => {
 
 export const getQuestions = async (req, res) => {
   try {
-    const questions = await gameOneModel.find().sort({ createdAt: -1 });
+    const count = await gameOneModel.countDocuments();
+    const questions = await gameOneModel.aggregate([
+      { $sample: { size: count } },
+    ]);
+
     return res.status(200).json({
       success: true,
       message: "Questions fetched successfully",
