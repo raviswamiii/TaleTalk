@@ -3,6 +3,7 @@ import { HiMenuAlt2 } from "react-icons/hi";
 import { RiAddLine } from "react-icons/ri";
 import { RxCross1 } from "react-icons/rx";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 export const GameOne = () => {
   const [blurScreen, setBlurScreen] = useState(false);
@@ -10,11 +11,13 @@ export const GameOne = () => {
   const [newQuestions, setNewQuestions] = useState([]);
   const [questions, setQuestions] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [error, setError] = useState("");
   const backendURL = import.meta.env.VITE_BACKEND_URL;
 
-  const addNewQuestion = async () => {
+  const addNewQuestion = async (e) => {
+    e.preventDefault();
     if (!addQuestion.trim()) {
-      console.log("Question is empty");
+      setError("Question cannot be empty");
       return;
     }
 
@@ -26,9 +29,9 @@ export const GameOne = () => {
       if (response.data.success) {
         setAddQuestion("");
         setBlurScreen(false);
-        console.log("Question added successfully");
+        toast.success("Question added successfully");
       } else {
-        console.log("Failed to add question:", response.data.message);
+        toast.error("Failed to add question");
       }
     } catch (error) {
       console.error(
@@ -38,7 +41,7 @@ export const GameOne = () => {
     }
   };
 
-  const fetchQuestions = async () => {
+  const fetchQuestions = async (e) => {
     try {
       const response = await axios.get(`${backendURL}/gameOne/getQuestions`);
       if (response.data.success) {
@@ -78,7 +81,12 @@ export const GameOne = () => {
           onClick={() => setBlurScreen(false)}
           className="text-white text-lg absolute right-4 top-3"
         />
-        <div className="bg-gray-300 w-full rounded-xl p-4 flex flex-col gap-3">
+        <form
+          onSubmit={addNewQuestion}
+          className="bg-gray-300 w-full rounded-xl p-4 flex flex-col gap-3"
+        >
+          {error && <p className="text-red-500 text-center">{error}</p>}
+
           <textarea
             placeholder="Type here..."
             className="w-full h-[20vh] px-3 py-1.5 rounded-lg border resize-none outline-none"
@@ -87,17 +95,17 @@ export const GameOne = () => {
           ></textarea>
 
           <div className="flex gap-3">
-            <button className="bg-red-500 w-full rounded-lg text-gray-300 py-2 font-semibold">
+            {/* <button className="bg-red-500 w-full rounded-lg text-gray-300 py-2 font-semibold">
               Drop
-            </button>
+            </button> */}
             <button
-              onClick={addNewQuestion}
+              type="submit"
               className="bg-green-500 w-full rounded-lg text-gray-300 py-2 font-semibold"
             >
               Save
             </button>
           </div>
-        </div>
+        </form>
       </div>
 
       <div className="h-screen p-6 overflow-y-scroll">
