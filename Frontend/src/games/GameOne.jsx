@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import { HiMenuAlt2 } from "react-icons/hi";
 import { RiAddLine } from "react-icons/ri";
 import { RxCross1 } from "react-icons/rx";
+import axios from "axios";
 
 export const GameOne = () => {
-  const [blurScreen, setBlurScreen] = useState(true);
+  const [blurScreen, setBlurScreen] = useState(false);
   const newQuestions = [
     { question: "What is the capital of France?" },
     { question: "Who wrote 'Romeo and Juliet'?" },
@@ -14,9 +15,10 @@ export const GameOne = () => {
     },
     { question: "What is the largest planet in our solar system?" },
   ];
-  const [addQuestion, setAddQuestion] = useState([]);
+  const [addQuestion, setAddQuestion] = useState("");
   const [questions, setQuestions] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const backendURL = import.meta.env.VITE_BACKEND_URL;
 
   const generateQuestions = () => {
     if (currentIndex >= newQuestions.length) return;
@@ -25,22 +27,31 @@ export const GameOne = () => {
   };
 
   const addNewQuestion = async () => {
-    try {
-      const response = await axios.post(`${backendURL}/gameOne/addQuestion`, {
-        addQuestion,
-      });
+  if (!addQuestion.trim()) {
+    console.log("Question is empty");
+    return;
+  }
 
-      if (response.data.success) {
-        setAddQuestion([]);
-        setBlurScreen(false);
-        console.log("Question added successfully");
-      } else {
-        console.log("Failed to add question:", response.data.message);
+  try {
+    const response = await axios.post(
+      `${backendURL}/gameOne/addQuestion`,
+      {
+        addQuestion: addQuestion.trim(),
       }
-    } catch (error) {
-      console.error("Error adding question:", error.response?.data?.message);
+    );
+
+    if (response.data.success) {
+      setAddQuestion("");
+      setBlurScreen(false);
+      console.log("Question added successfully");
+    } else {
+      console.log("Failed to add question:", response.data.message);
     }
-  };
+  } catch (error) {
+    console.error("Error adding question:", error.response?.data || error.message);
+  }
+};
+
   return (
     <div className="relative h-screen bg-[#0B090A] flex flex-col z-10">
       <div className="bg-[#161214] text-white px-3 py-3 flex items-center justify-between">
@@ -62,6 +73,8 @@ export const GameOne = () => {
           <textarea
             placeholder="Type here..."
             className="w-full h-[20vh] px-3 py-1.5 rounded-lg border resize-none outline-none"
+            value={addQuestion}
+            onChange={(e) => setAddQuestion(e.target.value)}
           ></textarea>
 
           <div className="flex gap-3">

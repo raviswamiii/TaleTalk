@@ -7,6 +7,6 @@ const gameOneSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-const gameOne = mongoose.model.GameOne || mongoose.model("GameOne", gameOneSchema);
+const gameOneModel = mongoose.model.GameOne || mongoose.model("GameOne", gameOneSchema);
 
-export default gameOne;
+export default gameOneModel;
