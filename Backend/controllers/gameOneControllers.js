@@ -20,15 +20,32 @@ export const addQuestion = async (req, res) => {
     return res.status(201).json({
       success: true,
       message: "Question added successfully",
-      data: newQuestion
+      data: newQuestion,
     });
-
   } catch (error) {
     console.error("Error adding question:", error);
     return res.status(500).json({
       success: false,
       message: "Error adding question",
-      error: error.message
+      error: error.message,
+    });
+  }
+};
+
+export const getQuestions = async (req, res) => {
+  try {
+    const questions = await gameOneModel.find().sort({ createdAt: -1 });
+    return res.status(200).json({
+      success: true,
+      message: "Questions fetched successfully",
+      data: questions,
+    });
+  } catch (error) {
+    console.log("Error fetching questions:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error fetching questions",
+      error: error.message,
     });
   }
 };

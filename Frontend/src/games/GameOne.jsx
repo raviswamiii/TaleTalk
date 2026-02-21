@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { HiMenuAlt2 } from "react-icons/hi";
 import { RiAddLine } from "react-icons/ri";
 import { RxCross1 } from "react-icons/rx";
@@ -6,51 +6,60 @@ import axios from "axios";
 
 export const GameOne = () => {
   const [blurScreen, setBlurScreen] = useState(false);
-  const newQuestions = [
-    { question: "What is the capital of France?" },
-    { question: "Who wrote 'Romeo and Juliet'?" },
-    {
-      question:
-        "Who wrote 'Romeo and Julietglkjgkjkjgjgkjsdjglsjfgjdfskjglsjglsjfgjsjgljgl'?",
-    },
-    { question: "What is the largest planet in our solar system?" },
-  ];
   const [addQuestion, setAddQuestion] = useState("");
+  const [newQuestions, setNewQuestions] = useState([]);
   const [questions, setQuestions] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const backendURL = import.meta.env.VITE_BACKEND_URL;
+
+  const addNewQuestion = async () => {
+    if (!addQuestion.trim()) {
+      console.log("Question is empty");
+      return;
+    }
+
+    try {
+      const response = await axios.post(`${backendURL}/gameOne/addQuestion`, {
+        addQuestion: addQuestion.trim(),
+      });
+
+      if (response.data.success) {
+        setAddQuestion("");
+        setBlurScreen(false);
+        console.log("Question added successfully");
+      } else {
+        console.log("Failed to add question:", response.data.message);
+      }
+    } catch (error) {
+      console.error(
+        "Error adding question:",
+        error.response?.data || error.message,
+      );
+    }
+  };
+
+  const fetchQuestions = async () => {
+    try {
+      const response = await axios.get(`${backendURL}/gameOne/getQuestions`);
+      if (response.data.success) {
+        setNewQuestions(response.data.data);
+      } else {
+        console.log("Failed to fetch questions:", response.data.message);
+      }
+    } catch (error) {
+      console.error("Error fetching questions:", error.response?.data?.message);
+    }
+  };
+
+  useEffect(() => {
+    fetchQuestions();
+  }, []);
 
   const generateQuestions = () => {
     if (currentIndex >= newQuestions.length) return;
     setQuestions((prev) => [newQuestions[currentIndex], ...prev]);
     setCurrentIndex((prev) => prev + 1);
   };
-
-  const addNewQuestion = async () => {
-  if (!addQuestion.trim()) {
-    console.log("Question is empty");
-    return;
-  }
-
-  try {
-    const response = await axios.post(
-      `${backendURL}/gameOne/addQuestion`,
-      {
-        addQuestion: addQuestion.trim(),
-      }
-    );
-
-    if (response.data.success) {
-      setAddQuestion("");
-      setBlurScreen(false);
-      console.log("Question added successfully");
-    } else {
-      console.log("Failed to add question:", response.data.message);
-    }
-  } catch (error) {
-    console.error("Error adding question:", error.response?.data || error.message);
-  }
-};
 
   return (
     <div className="relative h-screen bg-[#0B090A] flex flex-col z-10">
