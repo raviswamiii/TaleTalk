@@ -4,7 +4,7 @@ import { RiAddLine } from "react-icons/ri";
 import { RxCross1 } from "react-icons/rx";
 
 export const GameOne = () => {
-  const [blurScreen, setBlurScreen] = useState(false);
+  const [blurScreen, setBlurScreen] = useState(true);
   const newQuestions = [
     { question: "What is the capital of France?" },
     { question: "Who wrote 'Romeo and Juliet'?" },
@@ -14,6 +14,7 @@ export const GameOne = () => {
     },
     { question: "What is the largest planet in our solar system?" },
   ];
+  const [addQuestion, setAddQuestion] = useState([]);
   const [questions, setQuestions] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -23,7 +24,23 @@ export const GameOne = () => {
     setCurrentIndex((prev) => prev + 1);
   };
 
-  const addNewQuestion = () => {};
+  const addNewQuestion = async () => {
+    try {
+      const response = await axios.post(`${backendURL}/gameOne/addQuestion`, {
+        addQuestion,
+      });
+
+      if (response.data.success) {
+        setAddQuestion([]);
+        setBlurScreen(false);
+        console.log("Question added successfully");
+      } else {
+        console.log("Failed to add question:", response.data.message);
+      }
+    } catch (error) {
+      console.error("Error adding question:", error.response?.data?.message);
+    }
+  };
   return (
     <div className="relative h-screen bg-[#0B090A] flex flex-col z-10">
       <div className="bg-[#161214] text-white px-3 py-3 flex items-center justify-between">
@@ -35,12 +52,30 @@ export const GameOne = () => {
       </div>
 
       <div
-        className={`bg-black/40 h-screen absolute inset-0 z-20 backdrop-blur-sm ${blurScreen ? "" : "hidden"}`}
+        className={`bg-black/40 h-screen absolute inset-0 z-20 backdrop-blur-sm flex flex-col justify-center px-8 ${blurScreen ? "" : "hidden"}`}
       >
         <RxCross1
           onClick={() => setBlurScreen(false)}
           className="text-white text-lg absolute right-4 top-3"
         />
+        <div className="bg-gray-300 w-full rounded-xl p-4 flex flex-col gap-3">
+          <textarea
+            placeholder="Type here..."
+            className="w-full h-[20vh] px-3 py-1.5 rounded-lg border resize-none outline-none"
+          ></textarea>
+
+          <div className="flex gap-3">
+            <button className="bg-red-500 w-full rounded-lg text-gray-300 py-2 font-semibold">
+              Drop
+            </button>
+            <button
+              onClick={addNewQuestion}
+              className="bg-green-500 w-full rounded-lg text-gray-300 py-2 font-semibold"
+            >
+              Save
+            </button>
+          </div>
+        </div>
       </div>
 
       <div className="h-screen p-6 overflow-y-scroll">
@@ -59,8 +94,6 @@ export const GameOne = () => {
               );
             })
           : ""}
-
-        {/* <div className="bg-green-500 h-[60vh] rounded-xl"></div> */}
       </div>
 
       <div className="absolute bottom-0 w-full flex flex-col items-center">
