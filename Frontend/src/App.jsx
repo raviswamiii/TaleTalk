@@ -5,7 +5,7 @@ import { GameOne } from './games/GameOne.jsx'
 import { AddQuestions } from './components/AddQuestions.jsx'
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { QuestionContainer } from '../../Admin/src/components/QuestionContainer.jsx'
+// import { QuestionContainer } from '../../Admin/src/components/QuestionContainer.jsx'
 
 export const App = () => {
   return (
@@ -15,7 +15,7 @@ export const App = () => {
         <Route path='/' element={<Home />} />
         <Route path='/gameOne' element={<GameOne />} />
         <Route path='/addQuestions' element={<AddQuestions />} />
-        <Route path='/questionContainer' element={<QuestionContainer />} />
+        {/* <Route path='/questionContainer' element={<QuestionContainer />} /> */}
       </Routes>
     </>
   )
