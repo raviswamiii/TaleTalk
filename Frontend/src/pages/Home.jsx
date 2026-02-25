@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { MdManageAccounts } from "react-icons/md";
 import { HiMenuAlt2 } from "react-icons/hi";
 import game1 from "../assets/image1.jpg";
@@ -10,8 +10,10 @@ import game6 from "../assets/Kageyama.jpg";
 import game7 from "../assets/ppnaravit.jpg";
 import game8 from "../assets/image8.jpg";
 import { Link } from "react-router-dom";
+import { LeftSideBar } from "../components/LeftSideBar";
 
 export const Home = () => {
+  const [leftSideBar, setLeftSideBar] = useState(false);
   const games = [
     { id: 1, name: "Question Generator", img: game1, link: "/gameOne" },
     { id: 2, name: "Game name", img: game2 },
@@ -22,15 +24,21 @@ export const Home = () => {
     { id: 7, name: "Game name", img: game7 },
     { id: 8, name: "Game name", img: game8 },
   ];
+
   return (
-    <div className="h-screen bg-[#0B090A] flex flex-col">
+    <div className="h-screen relative z-10 bg-[#0B090A] flex flex-col">
       <div className="bg-[#161214] text-white px-3 py-3 flex items-center justify-between">
         <div className="flex gap-4 items-center">
-          <HiMenuAlt2 className="text-2xl" />
+          <HiMenuAlt2
+            onClick={() => setLeftSideBar(true)}
+            className="text-2xl"
+          />
           <h1 className="font-semibold text-lg">Tale Talk</h1>
         </div>
         <MdManageAccounts className="text-2xl" />
       </div>
+
+      <LeftSideBar leftSideBar={leftSideBar} setLeftSideBar={setLeftSideBar} />
 
       <div className="overflow-y-auto p-9 sm:p-10 md:p-11 lg:p-12 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
         {games.map((game) => (
