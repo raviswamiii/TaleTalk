@@ -59,7 +59,16 @@ export const GameOne = () => {
   }, []);
 
   const generateQuestions = () => {
-    if (currentIndex >= newQuestions.length) return;
+    if (newQuestions.length === 0) {
+      toast.error("No questions available. Please add questions first!");
+      return;
+    }
+
+    if (currentIndex >= newQuestions.length) {
+      toast.info("No more new questions to generate!");
+      return;
+    }
+
     setQuestions((prev) => [newQuestions[currentIndex], ...prev]);
     setCurrentIndex((prev) => prev + 1);
   };
@@ -106,21 +115,26 @@ export const GameOne = () => {
       </div>
 
       <div className="h-screen p-6 overflow-y-scroll">
-        {questions.length > 0
-          ? questions.map((question, index) => {
-              const isLatest = index === 0;
-              return (
-                <div
-                  key={index}
-                  className={`rounded-xl mb-4 flex justify-center items-center overflow-hidden p-5 ${isLatest ? "bg-blue-900" : "bg-red-900"}`}
-                >
-                  <p className="text-white font-semibold text-center w-full wrap-break-word">
-                    {question.question}
-                  </p>
-                </div>
-              );
-            })
-          : <p className="text-gray-400 text-center mt-10">No questions generated yet. Click the button below to generate questions.</p>}
+        {questions.length > 0 ? (
+          questions.map((question, index) => {
+            const isLatest = index === 0;
+            return (
+              <div
+                key={index}
+                className={`rounded-xl mb-4 flex justify-center items-center overflow-hidden p-5 ${isLatest ? "bg-blue-900" : "bg-red-900"}`}
+              >
+                <p className="text-white font-semibold text-center w-full wrap-break-word">
+                  {question.question}
+                </p>
+              </div>
+            );
+          })
+        ) : (
+          <p className="text-gray-400 text-center mt-10">
+            No questions generated yet. Click the button below to generate
+            questions.
+          </p>
+        )}
       </div>
 
       <div className="absolute bottom-0 w-full flex flex-col items-center">

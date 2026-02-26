@@ -60,8 +60,11 @@ export const QuestionContainer = () => {
       <LeftSideBar leftSideBar={leftSideBar} setLeftSideBar={setLeftSideBar} />
 
       <div className="h-screen p-6 overflow-y-scroll">
-        {allQuestions.length > 0
-          ? allQuestions.slice().reverse().map((question) => {
+        {allQuestions.length > 0 ? (
+          allQuestions
+            .slice()
+            .reverse()
+            .map((question) => {
               return (
                 <div
                   key={question._id}
@@ -77,7 +80,11 @@ export const QuestionContainer = () => {
                 </div>
               );
             })
-          : ""}
+        ) : (
+          <p className="text-gray-400 text-center mt-10">
+            No questions added yet.
+          </p>
+        )}
       </div>
     </div>
   );
