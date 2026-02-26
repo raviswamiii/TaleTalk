@@ -1,18 +1,36 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MdManageAccounts } from "react-icons/md";
 import { HiMenuAlt2 } from "react-icons/hi";
-
-import { Link } from "react-router-dom";
 import { LeftSideBar } from "../components/LeftSideBar";
+import axios from "axios";
 
 export const QuestionContainer = () => {
   const [leftSideBar, setLeftSideBar] = useState(false);
+  const [allQuestions, setAllQuestions] = useState([]);
   const questions = [
     { question: "kjgjafgjlkdjgjsflgjfjgjgjjgjgjfgjk" },
     { question: "kjgjafgjlkdjgjsflgjfjgjgjjgjgjfgjk" },
     { question: "kjgjafgjlkdjgjsflgjfjgjgjjgjgjfgjk" },
     { question: "kjgjafgjlkdjgjsflgjfjgjgjjgjgjfgjk" },
   ];
+  const backendURL = import.meta.env.VITE_BACKEND_URL;
+
+  const fetchAllQuestions = async () => {
+    try {
+      const response = await axios.get(`${backendURL}/admin/getAllQuestions`);
+      if (response.data.success) {
+        setAllQuestions(response.data.data);
+      } else {
+        console.log(response.data.message);
+      }
+    } catch (error) {
+      console.error(error.response?.data?.message || error.message);
+    }
+  }
+
+  useEffect(() => {
+    fetchAllQuestions();
+  }, []);
 
   return (
     <div className="h-screen relative z-10 bg-[#0B090A] flex flex-col">
@@ -30,8 +48,8 @@ export const QuestionContainer = () => {
       <LeftSideBar leftSideBar={leftSideBar} setLeftSideBar={setLeftSideBar} />
 
       <div className="h-screen p-6 overflow-y-scroll">
-        {questions.length > 0
-          ? questions.map((question, index) => {
+        {allQuestions.length > 0
+          ? allQuestions.map((question, index) => {
               return (
                 <div
                   key={index}
