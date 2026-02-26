@@ -27,6 +27,7 @@ export const GameOne = () => {
       });
 
       if (response.data.success) {
+        setNewQuestions((prev) => [...prev, response.data.data]);
         setAddQuestion("");
         setBlurScreen(false);
         toast.success("Question added successfully");
@@ -46,6 +47,7 @@ export const GameOne = () => {
       const response = await axios.get(`${backendURL}/gameOne/getQuestions`);
       if (response.data.success) {
         setNewQuestions(response.data.data);
+        setCurrentIndex(0);
       } else {
         console.log("Failed to fetch questions:", response.data.message);
       }

@@ -1,8 +1,8 @@
-import gameOneModel from "../models/gameOneModel.js";
+import questionsModel from "../models/questionsModel.js";
 
 export const getAllQuestions = async (req, res) => {
   try {
-    const questions = await gameOneModel.find({});
+    const questions = await questionsModel.find({});
     return res.status(200).json({
       success: true,
       data: questions,
@@ -19,7 +19,7 @@ export const getAllQuestions = async (req, res) => {
 export const deleteQuestion = async (req, res) => {
   try {
     const { questionId } = req.params;
-    await gameOneModel.findByIdAndDelete(questionId);
+    await questionsModel.findByIdAndDelete(questionId);
     return res.status(200).json({
       success: true,
       message: "Question deleted successfully",

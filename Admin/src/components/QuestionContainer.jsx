@@ -29,7 +29,7 @@ export const QuestionContainer = () => {
         `${backendURL}/admin/deleteQuestion/${questionId}`,
       );
       if (response.data.success) {
-        fetchAllQuestions();
+        setAllQuestions(prev => prev.filter(q => q._id !== questionId));
       } else {
         console.log(response.data.message);
       }
@@ -39,8 +39,14 @@ export const QuestionContainer = () => {
   };
 
   useEffect(() => {
+  fetchAllQuestions();
+
+  const interval = setInterval(() => {
     fetchAllQuestions();
-  }, []);
+  }, 3000);
+
+  return () => clearInterval(interval);
+}, []);
 
   return (
     <div className="h-screen relative z-10 bg-[#0B090A] flex flex-col">
