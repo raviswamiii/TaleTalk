@@ -95,9 +95,6 @@ export const GameOne = () => {
           ></textarea>
 
           <div className="flex gap-3">
-            {/* <button className="bg-red-500 w-full rounded-lg text-gray-300 py-2 font-semibold">
-              Drop
-            </button> */}
             <button
               type="submit"
               className="bg-green-500 w-full rounded-lg text-gray-300 py-2 font-semibold"
@@ -123,7 +120,7 @@ export const GameOne = () => {
                 </div>
               );
             })
-          : ""}
+          : <p className="text-gray-400 text-center mt-10">No questions generated yet. Click the button below to generate questions.</p>}
       </div>
 
       <div className="absolute bottom-0 w-full flex flex-col items-center">

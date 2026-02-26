@@ -2,17 +2,12 @@ import React, { useEffect, useState } from "react";
 import { MdManageAccounts } from "react-icons/md";
 import { HiMenuAlt2 } from "react-icons/hi";
 import { LeftSideBar } from "../components/LeftSideBar";
+import { RiDeleteBin6Fill } from "react-icons/ri";
 import axios from "axios";
 
 export const QuestionContainer = () => {
   const [leftSideBar, setLeftSideBar] = useState(false);
   const [allQuestions, setAllQuestions] = useState([]);
-  const questions = [
-    { question: "kjgjafgjlkdjgjsflgjfjgjgjjgjgjfgjk" },
-    { question: "kjgjafgjlkdjgjsflgjfjgjgjjgjgjfgjk" },
-    { question: "kjgjafgjlkdjgjsflgjfjgjgjjgjgjfgjk" },
-    { question: "kjgjafgjlkdjgjsflgjfjgjgjjgjgjfgjk" },
-  ];
   const backendURL = import.meta.env.VITE_BACKEND_URL;
 
   const fetchAllQuestions = async () => {
@@ -24,9 +19,24 @@ export const QuestionContainer = () => {
         console.log(response.data.message);
       }
     } catch (error) {
-      console.error(error.response?.data?.message || error.message);
+      console.log(error.response?.data?.message || error.message);
     }
-  }
+  };
+
+  const handleDeleteQuestion = async (questionId) => {
+    try {
+      const response = await axios.delete(
+        `${backendURL}/admin/deleteQuestion/${questionId}`,
+      );
+      if (response.data.success) {
+        fetchAllQuestions();
+      } else {
+        console.log(response.data.message);
+      }
+    } catch (error) {
+      console.log(error.response?.data?.message || error.message);
+    }
+  };
 
   useEffect(() => {
     fetchAllQuestions();
@@ -40,7 +50,9 @@ export const QuestionContainer = () => {
             onClick={() => setLeftSideBar(true)}
             className="text-2xl"
           />
-          <h1 className="font-semibold text-lg">All Questions</h1>
+          <h1 className="font-semibold text-lg">
+            All Questions ({allQuestions.length})
+          </h1>
         </div>
         <MdManageAccounts className="text-2xl" />
       </div>
@@ -49,15 +61,19 @@ export const QuestionContainer = () => {
 
       <div className="h-screen p-6 overflow-y-scroll">
         {allQuestions.length > 0
-          ? allQuestions.map((question, index) => {
+          ? allQuestions.slice().reverse().map((question) => {
               return (
                 <div
-                  key={index}
+                  key={question._id}
                   className={`rounded-xl mb-4 flex justify-center items-center overflow-hidden p-5 bg-red-900`}
                 >
                   <p className="text-white font-semibold text-center w-full wrap-break-word">
                     {question.question}
                   </p>
+                  <RiDeleteBin6Fill
+                    onClick={() => handleDeleteQuestion(question._id)}
+                    className="text-white text-lg cursor-pointer"
+                  />
                 </div>
               );
             })
