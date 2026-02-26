@@ -9,33 +9,24 @@ import adminRouter from "./routes/adminRoutes.js";
 
 databaseConnection();
 
-// app.use(cors({
-//   origin: process.env.FRONTEND_URL,
-//   credentials: true,
-// }))
+const allowedOrigins = (process.env.ALLOWED_ORIGINS || "").split(",");
 
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true);
 
-// const allowedOrigins = process.env.ALLOWED_ORIGINS
-//   ? process.env.ALLOWED_ORIGINS.split(",")
-//   : [];
-
-// app.use(cors({
-//   origin: (origin, callback) => {
-//     if (!origin) return callback(null, true); // Postman, server-to-server
-
-//     if (allowedOrigins.includes(origin)) {
-//       return callback(null, true);   // ✅ STOP here
-//     } else {
-//       console.log("❌ Blocked by CORS:", origin);
-//       return callback(null, false);  // ❌ blocked safely
-//     }
-//   },
-//   methods: ["GET","POST","PUT","PATCH","DELETE"],
-//   credentials: true,
-//   allowedHeaders: ["Content-Type","Authorization"]
-// }));
-
-app.use(cors());
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    } else {
+      console.log("❌ Blocked by CORS:", origin);
+      return callback(new Error("Not allowed by CORS"));
+    }
+  },
+  methods: ["GET","POST","PUT","PATCH","DELETE","OPTIONS"],
+  credentials: true,
+  allowedHeaders: ["Content-Type","Authorization"],
+  maxAge: 86400
+}));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
