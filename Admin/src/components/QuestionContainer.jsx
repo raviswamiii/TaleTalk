@@ -7,6 +7,12 @@ import { LeftSideBar } from "../components/LeftSideBar";
 
 export const QuestionContainer = () => {
   const [leftSideBar, setLeftSideBar] = useState(false);
+  const questions = [
+    { question: "kjgjafgjlkdjgjsflgjfjgjgjjgjgjfgjk" },
+    { question: "kjgjafgjlkdjgjsflgjfjgjgjjgjgjfgjk" },
+    { question: "kjgjafgjlkdjgjsflgjfjgjgjjgjgjfgjk" },
+    { question: "kjgjafgjlkdjgjsflgjfjgjgjjgjgjfgjk" },
+  ];
 
   return (
     <div className="h-screen relative z-10 bg-[#0B090A] flex flex-col">
@@ -22,6 +28,23 @@ export const QuestionContainer = () => {
       </div>
 
       <LeftSideBar leftSideBar={leftSideBar} setLeftSideBar={setLeftSideBar} />
+
+      <div className="h-screen p-6 overflow-y-scroll">
+        {questions.length > 0
+          ? questions.map((question, index) => {
+              return (
+                <div
+                  key={index}
+                  className={`rounded-xl mb-4 flex justify-center items-center overflow-hidden p-5 bg-red-900`}
+                >
+                  <p className="text-white font-semibold text-center w-full wrap-break-word">
+                    {question.question}
+                  </p>
+                </div>
+              );
+            })
+          : ""}
+      </div>
     </div>
   );
 };
