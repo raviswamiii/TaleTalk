@@ -12,6 +12,7 @@ export const App = () => {
     <ToastContainer />
       <Routes>
         <Route path='/' element={<Home />} />
+        <Route path='/gameOne/:category' element={<GameOne />} />
         <Route path='/gameOne' element={<GameOne />} />
         <Route path='/addQuestions' element={<AddQuestions />} />
       </Routes>
