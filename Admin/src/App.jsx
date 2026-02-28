@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { QuestionContainer } from "./components/QuestionContainer";
 import { Route, Routes } from "react-router-dom";
 import { SignIn } from "./pages/SignIn";
+import { SignUp } from "./pages/SignUp";
 
 export const App = () => {
   const [token, setToken] = useState(
@@ -13,9 +14,12 @@ export const App = () => {
   return (
     <div>
       {token === "" ? (
-        <SignIn setToken={setToken} />
+        <Routes>
+          <Route path="/signIn" element={<SignIn setToken={setToken} />} />
+          <Route path="/signUp" element={<SignUp setToken={setToken} />} />
+        </Routes>
       ) : (
-          <QuestionContainer />
+        <QuestionContainer />
       )}
     </div>
   );
