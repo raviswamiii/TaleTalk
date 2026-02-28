@@ -6,6 +6,7 @@ export const SignUp = ({ setToken }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const backendURL = import.meta.env.VITE_BACKEND_URL;
 
   const onSubmitHandler = async (e) => {
@@ -16,13 +17,14 @@ export const SignUp = ({ setToken }) => {
         email,
         password,
       });
+
       if (response.data.success) {
         setToken(response.data.token);
       } else {
-        console.log(response.data.message);
+        setError(response.data.message);
       }
     } catch (error) {
-      console.error(error.response?.data?.message || "server error");
+      setError(error.response?.data?.message || "server error");
     }
   };
   return (
@@ -68,11 +70,15 @@ export const SignUp = ({ setToken }) => {
           </button>
         </form>
 
-        <Link to="/signIn" className="text-center mt-6 text-sm text-gray-300">
-          Don’t have an account?{" "}
-          <span className="text-white font-semibold cursor-pointer hover:underline">
-            Sign In
-          </span>
+        <p className="text-red-500 text-center mt-2">{error}</p>
+
+        <Link to="/signIn">
+          <div className="text-center mt-4 text-sm text-gray-300">
+            Already have an account?{" "}
+            <span className="text-white font-semibold cursor-pointer hover:underline">
+              Sign In
+            </span>
+          </div>
         </Link>
       </div>
     </div>

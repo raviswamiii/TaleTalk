@@ -7,6 +7,6 @@ const questions = new mongoose.Schema(
   { timestamps: true },
 );
 
-const questionsModel = mongoose.model.questions || mongoose.model("questions", questions);
+const questionsModel = mongoose.models.Questions || mongoose.model("Questions", questions);
 
 export default questionsModel;
