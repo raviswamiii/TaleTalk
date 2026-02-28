@@ -15,11 +15,13 @@ export const App = () => {
     <div>
       {token === "" ? (
         <Routes>
-          <Route path="/signIn" element={<SignIn setToken={setToken} />} />
+          <Route path="/" element={<SignIn setToken={setToken} />} />
           <Route path="/signUp" element={<SignUp setToken={setToken} />} />
         </Routes>
       ) : (
-        <QuestionContainer />
+        <Routes>
+          <Route path="/" element={<QuestionContainer />} />
+        </Routes>
       )}
     </div>
   );
