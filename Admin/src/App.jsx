@@ -1,6 +1,6 @@
-import React, { useEffect, useState, Navigate } from "react";
+import React, { useEffect, useState } from "react";
 import { QuestionContainer } from "./components/QuestionContainer";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import { SignIn } from "./pages/SignIn";
 import { SignUp } from "./pages/SignUp";
 
@@ -11,7 +11,7 @@ export const App = () => {
 
   useEffect(() => {
     localStorage.setItem("token", token);
-  });
+  },[token]);
   return (
     <div>
       <Routes>
