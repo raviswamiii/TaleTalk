@@ -15,9 +15,7 @@ export const App = () => {
       {token === "" ? (
         <SignIn setToken={setToken} />
       ) : (
-        <Routes>
-          <Route path="/" element={<QuestionContainer />} />
-        </Routes>
+          <QuestionContainer />
       )}
     </div>
   );
