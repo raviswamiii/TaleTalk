@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Navigate } from "react";
 import { QuestionContainer } from "./components/QuestionContainer";
 import { Route, Routes } from "react-router-dom";
 import { SignIn } from "./pages/SignIn";
@@ -8,21 +8,40 @@ export const App = () => {
   const [token, setToken] = useState(
     localStorage.getItem("token") ? localStorage.getItem("token") : "",
   );
+
   useEffect(() => {
     localStorage.setItem("token", token);
   });
   return (
     <div>
-      {token === "" ? (
-        <Routes>
-          <Route path="/" element={<SignIn setToken={setToken} />} />
-          <Route path="/signUp" element={<SignUp setToken={setToken} />} />
-        </Routes>
-      ) : (
-        <Routes>
-          <Route path="/" element={<QuestionContainer />} />
-        </Routes>
-      )}
+      <Routes>
+        <Route
+          path="/"
+          element={
+            token === "" ? (
+              <SignIn setToken={setToken} />
+            ) : (
+              <Navigate to="/dashboard" />
+            )
+          }
+        />
+
+        <Route
+          path="/signUp"
+          element={
+            token === "" ? (
+              <SignUp setToken={setToken} />
+            ) : (
+              <Navigate to="/dashboard" />
+            )
+          }
+        />
+
+        <Route
+          path="/dashboard"
+          element={token !== "" ? <QuestionContainer /> : <Navigate to="/" />}
+        />
+      </Routes>
     </div>
   );
 };

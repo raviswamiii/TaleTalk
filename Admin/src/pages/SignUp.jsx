@@ -72,7 +72,7 @@ export const SignUp = ({ setToken }) => {
 
         <p className="text-red-500 text-center mt-2">{error}</p>
 
-        <Link to="/signIn">
+        <Link to="/">
           <div className="text-center mt-4 text-sm text-gray-300">
             Already have an account?{" "}
             <span className="text-white font-semibold cursor-pointer hover:underline">
