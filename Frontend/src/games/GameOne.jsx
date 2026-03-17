@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { HiMenuAlt2 } from "react-icons/hi";
 import { RiAddLine } from "react-icons/ri";
 import { RxCross1 } from "react-icons/rx";
@@ -6,6 +6,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { LeftSideBar } from "../components/LeftSideBar";
 import { AddCategoryPopup } from "../components/AddCategoryPopup";
+import { GameOneContext } from "../context/GameOneContext";
 
 export const GameOne = () => {
   const [blurScreen, setBlurScreen] = useState(false);
@@ -16,6 +17,7 @@ export const GameOne = () => {
   const [error, setError] = useState("");
   const [leftSideBar, setLeftSideBar] = useState(false);
   const [showCategoryPanel, setShowCategoryPanel] = useState(false);
+  const {categoryName} = useContext(GameOneContext);
 
   const backendURL = import.meta.env.VITE_BACKEND_URL;
 
@@ -91,7 +93,7 @@ export const GameOne = () => {
             onClick={() => setLeftSideBar(true)}
             className="text-2xl"
           />
-          <h1 className="font-semibold text-lg">Question Generator</h1>
+          <h1 className="font-semibold text-lg">{categoryName || "All"}</h1>
         </div>
 
         <RiAddLine onClick={() => setBlurScreen(true)} className="text-2xl" />

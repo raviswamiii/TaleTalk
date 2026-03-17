@@ -1,7 +1,8 @@
-import React, { useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { SiReaddotcv } from "react-icons/si";
 import { FcSearch } from "react-icons/fc";
+import { GameOneContext } from "../context/GameOneContext";
 
 export const LeftSideBar = ({
   leftSideBar,
@@ -9,6 +10,7 @@ export const LeftSideBar = ({
   setShowCategoryPanel,
 }) => {
   const leftSideBarRef = useRef();
+  const { setCategoryName } = useContext(GameOneContext);
 
   useEffect(() => {
     const handleleftSideBarClick = (e) => {
@@ -55,39 +57,99 @@ export const LeftSideBar = ({
         />
       </div>
 
-      <Link to="/game/all">
-        <p className="text-gray-300 p-3 border-b border-white/5 hover:bg-white/5 hover:text-white transition">
+      <Link to="/gameOne">
+        <p
+          onClick={() => {
+            setLeftSideBar(false);
+            setCategoryName("All");
+          }}
+          className="text-gray-300 p-3 border-b border-white/5 hover:bg-white/5 hover:text-white transition"
+        >
           All
         </p>
       </Link>
 
-      <Link to="/game/added-by-me">
-        <p className="text-gray-300 p-3 border-b border-white/5 hover:bg-white/5 hover:text-white transition">
+      <Link to="/justmetaperson">
+        <p
+          onClick={() => {
+            setLeftSideBar(false);
+            setCategoryName("Met a person just now");
+          }}
+          className="text-gray-300 p-3 border-b border-white/5 hover:bg-white/5 hover:text-white transition"
+        >
+          Met a person just now
+        </p>
+      </Link>
+
+      <Link to="/added-by-me">
+        <p
+          onClick={() => {
+            setLeftSideBar(false);
+            setCategoryName("Added by me");
+          }}
+          className="text-gray-300 p-3 border-b border-white/5 hover:bg-white/5 hover:text-white transition"
+        >
           Added by me
         </p>
       </Link>
 
-      <Link to="/game/pickup-lines">
-        <p className="text-gray-300 p-3 border-b border-white/5 hover:bg-white/5 hover:text-white transition">
+      <Link to="/pickup-lines">
+        <p
+          onClick={() => {
+            setLeftSideBar(false);
+            setCategoryName("PickUp lines");
+          }}
+          className="text-gray-300 p-3 border-b border-white/5 hover:bg-white/5 hover:text-white transition"
+        >
           PickUp lines
         </p>
       </Link>
 
-      <Link to="/game/shayriya">
-        <p className="text-gray-300 p-3 border-b border-white/5 hover:bg-white/5 hover:text-white transition">
+      <Link to="/shayriya">
+        <p
+          onClick={() => {
+            setLeftSideBar(false);
+            setCategoryName("Shayriya");
+          }}
+          className="text-gray-300 p-3 border-b border-white/5 hover:bg-white/5 hover:text-white transition"
+        >
           Shayriya
         </p>
       </Link>
 
-      <Link to="/game/jokes">
-        <p className="text-gray-300 p-3 border-b border-white/5 hover:bg-white/5 hover:text-white transition">
+      <Link to="/jokes">
+        <p
+          onClick={() => {
+            setLeftSideBar(false);
+            setCategoryName("Jokes");
+          }}
+          className="text-gray-300 p-3 border-b border-white/5 hover:bg-white/5 hover:text-white transition"
+        >
           Jokes
         </p>
       </Link>
 
-      <Link to="/game/flirting">
-        <p className="text-gray-300 p-3 border-b border-white/5 hover:bg-white/5 hover:text-white transition">
+      <Link to="/flirting">
+        <p
+          onClick={() => {
+            setLeftSideBar(false);
+            setCategoryName("Flirting");
+          }}
+          className="text-gray-300 p-3 border-b border-white/5 hover:bg-white/5 hover:text-white transition"
+        >
           Flirting
+        </p>
+      </Link>
+
+      <Link to="/roasting">
+        <p
+          onClick={() => {
+            setLeftSideBar(false);
+            setCategoryName("Roasting");
+          }}
+          className="text-gray-300 p-3 border-b border-white/5 hover:bg-white/5 hover:text-white transition"
+        >
+          Roasting
         </p>
       </Link>
     </div>
