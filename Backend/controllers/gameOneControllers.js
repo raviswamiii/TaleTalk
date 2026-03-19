@@ -2,17 +2,25 @@ import gameOneModel from "../models/questionsModel.js";
 
 export const addQuestion = async (req, res) => {
   try {
-    const { addQuestion } = req.body;
+    const { question, category } = req.body;
 
-    if (!addQuestion || !addQuestion.trim()) {
+    if (!question || !question.trim()) {
       return res.status(400).json({
         success: false,
         message: "Question is required",
       });
     }
 
+    if (!category) {
+      return res.status(400).json({
+        success: false,
+        message: "Category is required",
+      });
+    }
+
     const newQuestion = new gameOneModel({
-      question: addQuestion.trim(),
+      question: question.trim(),
+      category,
     });
 
     await newQuestion.save();
@@ -34,9 +42,20 @@ export const addQuestion = async (req, res) => {
 
 export const getQuestions = async (req, res) => {
   try {
-    const count = await gameOneModel.countDocuments();
+    const category = decodeURIComponent(req.params.category);
+
+    if (!category) {
+      return res.status(400).json({
+        success: false,
+        message: "Category is required",
+      });
+    }
+
+    const count = await gameOneModel.countDocuments({ category });
+
     const questions = await gameOneModel.aggregate([
-      { $sample: { size: count } },
+      { $match: { category } },  
+      { $sample: { size: count || 1 } }, 
     ]);
 
     return res.status(200).json({
