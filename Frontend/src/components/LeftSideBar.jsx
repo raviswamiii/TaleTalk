@@ -81,7 +81,7 @@ export const LeftSideBar = ({
         </p>
       </Link>
 
-      <Link to="/added-by-me">
+      {/* <Link to="/added-by-me">
         <p
           onClick={() => {
             setLeftSideBar(false);
@@ -91,29 +91,29 @@ export const LeftSideBar = ({
         >
           Added by me
         </p>
-      </Link>
+      </Link> */}
 
       <Link to="/pickup-lines">
         <p
           onClick={() => {
             setLeftSideBar(false);
-            setCategoryName("PickUp lines");
+            setCategoryName("Pickup lines");
           }}
           className="text-gray-300 p-3 border-b border-white/5 hover:bg-white/5 hover:text-white transition"
         >
-          PickUp lines
+          Pickup lines
         </p>
       </Link>
 
-      <Link to="/shayriya">
+      <Link to="/poetries">
         <p
           onClick={() => {
             setLeftSideBar(false);
-            setCategoryName("Shayriya");
+            setCategoryName("Poetries");
           }}
           className="text-gray-300 p-3 border-b border-white/5 hover:bg-white/5 hover:text-white transition"
         >
-          Shayriya
+          Poetries
         </p>
       </Link>
 
