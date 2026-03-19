@@ -1,5 +1,7 @@
 import gameOneModel from "../models/questionsModel.js";
 
+let cache = {};
+
 export const addQuestion = async (req, res) => {
   try {
     const { question, category } = req.body;
@@ -20,10 +22,12 @@ export const addQuestion = async (req, res) => {
 
     const newQuestion = new gameOneModel({
       question: question.trim(),
-      category,
+      category: category.trim(),
     });
 
     await newQuestion.save();
+
+    delete cache[category];
 
     return res.status(201).json({
       success: true,
@@ -42,7 +46,7 @@ export const addQuestion = async (req, res) => {
 
 export const getQuestions = async (req, res) => {
   try {
-    const category = decodeURIComponent(req.params.category);
+    const category = decodeURIComponent(req.params.category).trim();
 
     if (!category) {
       return res.status(400).json({
@@ -51,12 +55,20 @@ export const getQuestions = async (req, res) => {
       });
     }
 
-    const count = await gameOneModel.countDocuments({ category });
+    if (cache[category]) {
+      return res.status(200).json({
+        success: true,
+        message: "Questions fetched from cache",
+        data: cache[category],
+      });
+    }
 
     const questions = await gameOneModel.aggregate([
-      { $match: { category } },  
-      { $sample: { size: count || 1 } }, 
+      { $match: { category } },
+      { $sample: { size: 10 } }, 
     ]);
+
+    cache[category] = questions;
 
     return res.status(200).json({
       success: true,

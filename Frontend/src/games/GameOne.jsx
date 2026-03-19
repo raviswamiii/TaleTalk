@@ -18,6 +18,7 @@ export const GameOne = () => {
   const [leftSideBar, setLeftSideBar] = useState(false);
   const [showCategoryPanel, setShowCategoryPanel] = useState(false);
   const { categoryName } = useContext(GameOneContext);
+  const [loading, setLoading] = useState(false);
 
   const backendURL = import.meta.env.VITE_BACKEND_URL;
 
@@ -52,26 +53,30 @@ export const GameOne = () => {
   };
 
   const fetchQuestions = async () => {
-  if (!categoryName || categoryName.trim() === "") {
-    console.log("Category is missing");
-    return;
-  }
-
-  try {
-    const response = await axios.get(
-      `${backendURL}/gameOne/getQuestions/${encodeURIComponent(categoryName)}`,
-    );
-
-    if (response.data.success) {
-      setNewQuestions(response.data.data);
-      setCurrentIndex(0);
-    } else {
-      console.log("Failed to fetch questions:", response.data.message);
+    if (!categoryName || categoryName.trim() === "") {
+      console.log("Category is missing");
+      return;
     }
-  } catch (error) {
-    console.error("Error fetching questions:", error.response?.data?.message);
-  }
-};
+
+    try {
+      setLoading(true);
+
+      const response = await axios.get(
+        `${backendURL}/gameOne/getQuestions/${encodeURIComponent(categoryName)}`,
+      );
+
+      if (response.data.success) {
+        setNewQuestions(response.data.data);
+        setCurrentIndex(0);
+      } else {
+        console.log("Failed to fetch questions:", response.data.message);
+      }
+    } catch (error) {
+      console.error("Error fetching questions:", error.response?.data?.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (categoryName) {
@@ -162,7 +167,11 @@ export const GameOne = () => {
       </div>
 
       <div className="h-screen p-6 overflow-y-scroll">
-        {questions.length > 0 ? (
+        {loading ? (
+          <div className="flex justify-center items-center h-[60vh]">
+            <div className="w-10 h-10 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+          </div>
+        ) : questions.length > 0 ? (
           questions.map((question, index) => {
             const isLatest = index === 0;
 
