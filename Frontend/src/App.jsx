@@ -16,8 +16,8 @@ export const App = () => {
     <>
     <ToastContainer />
       <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='/gameOne' element={<GameOne />} />
+        {/* <Route path='/' element={<Home />} /> */}
+        <Route path='/' element={<GameOne />} />
         <Route path='/justmetaperson' element={<JustMetAPerson />} />
         <Route path='/jokes' element={<Jokes />} />
         <Route path='/flirting' element={<Flirting />} />

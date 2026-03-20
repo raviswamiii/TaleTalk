@@ -57,7 +57,7 @@ export const LeftSideBar = ({
         />
       </div>
 
-      <Link to="/gameOne">
+      <Link to="/">
         <p
           onClick={() => {
             setLeftSideBar(false);
