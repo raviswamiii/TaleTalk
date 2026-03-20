@@ -108,7 +108,7 @@ export const GameOne = () => {
             onClick={() => setLeftSideBar(true)}
             className="text-2xl"
           />
-          <h1 className="font-semibold text-lg">{categoryName || "All"}</h1>
+          <h1 className="font-semibold text-lg">{categoryName || "Met a person just now"}</h1>
         </div>
 
         <RiAddLine onClick={() => setBlurScreen(true)} className="text-2xl" />

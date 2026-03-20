@@ -57,7 +57,7 @@ export const LeftSideBar = ({
         />
       </div>
 
-      <Link to="/">
+      {/* <Link to="/">
         <p
           onClick={() => {
             setLeftSideBar(false);
@@ -67,9 +67,9 @@ export const LeftSideBar = ({
         >
           All
         </p>
-      </Link>
+      </Link> */}
 
-      <Link to="/justmetaperson">
+      <Link to="/">
         <p
           onClick={() => {
             setLeftSideBar(false);
