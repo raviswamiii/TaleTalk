@@ -10,7 +10,7 @@ export const LeftSideBar = ({
   setShowCategoryPanel,
 }) => {
   const leftSideBarRef = useRef();
-  const { setCategoryName } = useContext(GameOneContext);
+  const { categories } = useContext(GameOneContext);
 
   useEffect(() => {
     const handleleftSideBarClick = (e) => {
@@ -28,7 +28,6 @@ export const LeftSideBar = ({
       document.removeEventListener("mousedown", handleleftSideBarClick);
     };
   }, [leftSideBar, setLeftSideBar]);
-
   return (
     <div
       className={`bg-[#0B090A] h-screen absolute z-20 w-[70vw] 
@@ -57,19 +56,20 @@ export const LeftSideBar = ({
         />
       </div>
 
-      {/* <Link to="/">
-        <p
-          onClick={() => {
-            setLeftSideBar(false);
-            setCategoryName("All");
-          }}
-          className="text-gray-300 p-3 border-b border-white/5 hover:bg-white/5 hover:text-white transition"
-        >
-          All
-        </p>
-      </Link> */}
+      {categories.map((item, index) => (
+        <Link to={`/category/${item.category}`} key={item._id || index}>
+          <p
+            onClick={() => {
+              setLeftSideBar(false);
+            }}
+            className="text-gray-300 p-3 border-b border-white/5 hover:bg-white/5 hover:text-white transition"
+          >
+            {item.category}
+          </p>
+        </Link>
+      ))}
 
-      <Link to="/">
+      {/* <Link to="/">
         <p
           onClick={() => {
             setLeftSideBar(false);
@@ -79,7 +79,7 @@ export const LeftSideBar = ({
         >
           Met a person just now
         </p>
-      </Link>
+      </Link> */}
 
       {/* <Link to="/added-by-me">
         <p
@@ -93,7 +93,7 @@ export const LeftSideBar = ({
         </p>
       </Link> */}
 
-      <Link to="/pickup-lines">
+      {/* <Link to="/pickup-lines">
         <p
           onClick={() => {
             setLeftSideBar(false);
@@ -103,9 +103,9 @@ export const LeftSideBar = ({
         >
           Pickup lines
         </p>
-      </Link>
+      </Link> */}
 
-      <Link to="/poetries">
+      {/* <Link to="/poetries">
         <p
           onClick={() => {
             setLeftSideBar(false);
@@ -115,9 +115,9 @@ export const LeftSideBar = ({
         >
           Poetries
         </p>
-      </Link>
+      </Link> */}
 
-      <Link to="/jokes">
+      {/* <Link to="/jokes">
         <p
           onClick={() => {
             setLeftSideBar(false);
@@ -127,9 +127,9 @@ export const LeftSideBar = ({
         >
           Jokes
         </p>
-      </Link>
+      </Link> */}
 
-      <Link to="/flirting">
+      {/* <Link to="/flirting">
         <p
           onClick={() => {
             setLeftSideBar(false);
@@ -139,9 +139,9 @@ export const LeftSideBar = ({
         >
           Flirting
         </p>
-      </Link>
+      </Link> */}
 
-      <Link to="/roasting">
+      {/* <Link to="/roasting">
         <p
           onClick={() => {
             setLeftSideBar(false);
@@ -151,7 +151,7 @@ export const LeftSideBar = ({
         >
           Roasting
         </p>
-      </Link>
+      </Link> */}
     </div>
   );
 };

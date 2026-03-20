@@ -2,24 +2,14 @@ import mongoose from "mongoose";
 
 const questionsSchema = new mongoose.Schema(
   {
-    question: {
-      type: String,
-      required: true,
-    },
+    // question: {
+    //   type: String,
+    //   required: true,
+    // },
 
     category: {
       type: String,
       required: true,
-      enum: [
-        "All",
-        "Met a person just now",
-        "Added by me",
-        "Pickup lines",
-        "Poetries",
-        "Jokes",
-        "Flirting",
-        "Roasting",
-      ],
     },
   },
   { timestamps: true },

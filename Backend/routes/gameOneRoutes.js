@@ -1,8 +1,10 @@
 import express from "express";
-import { addQuestion, getQuestions } from "../controllers/gameOneControllers.js";
+import { addCategory, getCategories } from "../controllers/gameOneControllers.js";
 const gameOneRouter = express.Router();
 
-gameOneRouter.post("/addQuestion", addQuestion);
-gameOneRouter.get("/getQuestions/:category", getQuestions);
+// gameOneRouter.post("/addQuestion", addQuestion);
+// gameOneRouter.get("/getQuestions/:category", getQuestions);
+gameOneRouter.post("/addCategory", addCategory);
+gameOneRouter.get("/getCategories", getCategories);
 
 export default gameOneRouter;

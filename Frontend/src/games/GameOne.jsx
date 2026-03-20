@@ -52,37 +52,37 @@ export const GameOne = () => {
     }
   };
 
-  const fetchQuestions = async () => {
-    if (!categoryName || categoryName.trim() === "") {
-      console.log("Category is missing");
-      return;
-    }
+  // const fetchQuestions = async () => {
+  //   if (!categoryName || categoryName.trim() === "") {
+  //     console.log("Category is missing");
+  //     return;
+  //   }
 
-    try {
-      setLoading(true);
+  //   try {
+  //     setLoading(true);
 
-      const response = await axios.get(
-        `${backendURL}/gameOne/getQuestions/${encodeURIComponent(categoryName)}`,
-      );
+  //     const response = await axios.get(
+  //       `${backendURL}/gameOne/getQuestions/${encodeURIComponent(categoryName)}`,
+  //     );
 
-      if (response.data.success) {
-        setNewQuestions(response.data.data);
-        setCurrentIndex(0);
-      } else {
-        console.log("Failed to fetch questions:", response.data.message);
-      }
-    } catch (error) {
-      console.error("Error fetching questions:", error.response?.data?.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+  //     if (response.data.success) {
+  //       setNewQuestions(response.data.data);
+  //       setCurrentIndex(0);
+  //     } else {
+  //       console.log("Failed to fetch questions:", response.data.message);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching questions:", error.response?.data?.message);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
-  useEffect(() => {
-    if (categoryName) {
-      fetchQuestions();
-    }
-  }, [categoryName]);
+  // useEffect(() => {
+  //   if (categoryName) {
+  //     fetchQuestions();
+  //   }
+  // }, [categoryName]);
 
   const generateQuestions = () => {
     if (newQuestions.length === 0) {
@@ -108,7 +108,7 @@ export const GameOne = () => {
             onClick={() => setLeftSideBar(true)}
             className="text-2xl"
           />
-          <h1 className="font-semibold text-lg">{categoryName || "Met a person just now"}</h1>
+          <h1 className="font-semibold text-lg">{categoryName || ""}</h1>
         </div>
 
         <RiAddLine onClick={() => setBlurScreen(true)} className="text-2xl" />
