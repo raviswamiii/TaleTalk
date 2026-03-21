@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { SiReaddotcv } from "react-icons/si";
 import { FcSearch } from "react-icons/fc";
@@ -9,8 +9,10 @@ export const LeftSideBar = ({
   setLeftSideBar,
   setShowCategoryPanel,
 }) => {
+
   const leftSideBarRef = useRef();
   const { categories } = useContext(GameOneContext);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     const handleleftSideBarClick = (e) => {
@@ -28,6 +30,11 @@ export const LeftSideBar = ({
       document.removeEventListener("mousedown", handleleftSideBarClick);
     };
   }, [leftSideBar, setLeftSideBar]);
+
+  const filteredCategories = categories.filter((item) =>
+    item.category.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
     <div
       className={`bg-[#0B090A] h-screen absolute z-20 w-[70vw] 
@@ -47,6 +54,8 @@ export const LeftSideBar = ({
             focus:border-blue-500 transition-all"
             type="text"
             placeholder="Search..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
           />
         </div>
 
@@ -56,7 +65,7 @@ export const LeftSideBar = ({
         />
       </div>
 
-      {categories.map((item, index) => (
+      {filteredCategories.map((item, index) => (
         <Link to={`/category/${item.category}`} key={item._id || index}>
           <p
             onClick={() => {
