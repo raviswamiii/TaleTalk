@@ -109,10 +109,16 @@ export const GameOne = () => {
             onClick={() => setLeftSideBar(true)}
             className="text-2xl"
           />
-          <h1 className="font-semibold text-lg">{categoryName || "Game One"}</h1>
+          <h1 className="font-semibold text-lg">
+            {categoryName || "Tale Talk"}
+          </h1>
         </div>
 
-        {!categoryName?.trim() ? "" : <RiAddLine onClick={() => setBlurScreen(true)} className="text-2xl" />}
+        {!categoryName?.trim() ? (
+          ""
+        ) : (
+          <RiAddLine onClick={() => setBlurScreen(true)} className="text-2xl" />
+        )}
       </div>
 
       {!categoryName?.trim() ? (

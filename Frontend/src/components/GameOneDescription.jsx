@@ -6,7 +6,7 @@ export const GameOneDescription = () => {
       <h1 className="text-2xl font-semibold text-center">Description</h1>
 
       <p className="border border-gray-300 p-4 rounded-2xl">
-        Game One generates random topics and questions to help you start conversations and avoid awkward silence.
+        Tale Talk generates random topics and questions to help you start conversations and avoid awkward silence.
       </p>
 
       <p className="border border-gray-300 p-4 rounded-2xl">
