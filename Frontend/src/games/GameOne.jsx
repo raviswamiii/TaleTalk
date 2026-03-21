@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { LeftSideBar } from "../components/LeftSideBar";
 import { AddCategoryPopup } from "../components/AddCategoryPopup";
 import { GameOneContext } from "../context/GameOneContext";
+import { GameOneDescription } from "../components/GameOneDescription";
 
 export const GameOne = () => {
   const [blurScreen, setBlurScreen] = useState(false);
@@ -108,104 +109,110 @@ export const GameOne = () => {
             onClick={() => setLeftSideBar(true)}
             className="text-2xl"
           />
-          <h1 className="font-semibold text-lg">{categoryName || ""}</h1>
+          <h1 className="font-semibold text-lg">{categoryName || "Game One"}</h1>
         </div>
 
-        <RiAddLine onClick={() => setBlurScreen(true)} className="text-2xl" />
+        {!categoryName?.trim() ? "" : <RiAddLine onClick={() => setBlurScreen(true)} className="text-2xl" />}
       </div>
 
-      <div
-        className={`bg-black/60 h-screen fixed inset-0 z-30 
+      {!categoryName?.trim() ? (
+        <GameOneDescription />
+      ) : (
+        <>
+          <div
+            className={`bg-black/60 h-screen fixed inset-0 z-30 
         backdrop-blur-md flex flex-col justify-center px-6 
         ${blurScreen ? "" : "hidden"}`}
-      >
-        <RxCross1
-          onClick={() => setBlurScreen(false)}
-          className="text-white text-xl absolute right-5 top-5 
+          >
+            <RxCross1
+              onClick={() => setBlurScreen(false)}
+              className="text-white text-xl absolute right-5 top-5 
           cursor-pointer hover:scale-110 transition"
-        />
+            />
 
-        <form
-          onSubmit={addNewQuestion}
-          className="bg-[#161214] w-full max-w-105 mx-auto 
+            <form
+              onSubmit={addNewQuestion}
+              className="bg-[#161214] w-full max-w-105 mx-auto 
           rounded-2xl p-6 flex flex-col gap-4 
           border border-white/10 shadow-2xl"
-        >
-          <h2 className="text-white text-lg font-semibold text-center tracking-wide">
-            Add New Question
-          </h2>
+            >
+              <h2 className="text-white text-lg font-semibold text-center tracking-wide">
+                Add New Question
+              </h2>
 
-          {error && (
-            <p className="text-red-400 text-center text-sm bg-red-900/20 py-1 rounded-md">
-              {error}
-            </p>
-          )}
+              {error && (
+                <p className="text-red-400 text-center text-sm bg-red-900/20 py-1 rounded-md">
+                  {error}
+                </p>
+              )}
 
-          <textarea
-            placeholder="Type your question here..."
-            className="w-full h-[22vh] px-4 py-3 rounded-xl 
+              <textarea
+                placeholder="Type your question here..."
+                className="w-full h-[22vh] px-4 py-3 rounded-xl 
             bg-[#0B090A] text-white
             border border-white/10 resize-none outline-none
             placeholder-gray-400
             focus:border-blue-500 transition"
-            value={addQuestion}
-            onChange={(e) => setAddQuestion(e.target.value)}
-          />
+                value={addQuestion}
+                onChange={(e) => setAddQuestion(e.target.value)}
+              />
 
-          <div className="flex gap-3 pt-2">
-            <button
-              type="submit"
-              className="bg-blue-600 hover:bg-blue-500 
+              <div className="flex gap-3 pt-2">
+                <button
+                  type="submit"
+                  className="bg-blue-600 hover:bg-blue-500 
               w-full rounded-xl text-white py-2.5 
               font-semibold tracking-wide transition 
               shadow-lg"
-            >
-              Save Question
-            </button>
-          </div>
-        </form>
-      </div>
-
-      <div className="h-screen p-6 overflow-y-scroll">
-        {loading ? (
-          <div className="flex justify-center items-center h-[60vh]">
-            <div className="w-10 h-10 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
-          </div>
-        ) : questions.length > 0 ? (
-          questions.map((question, index) => {
-            const isLatest = index === 0;
-
-            return (
-              <div
-                key={index}
-                className={`rounded-xl mb-4 flex justify-center items-center overflow-hidden p-5 ${
-                  isLatest ? "bg-blue-900" : "bg-red-900"
-                }`}
-              >
-                <p className="text-white font-semibold text-center w-full wrap-break-word">
-                  {question.question}
-                </p>
+                >
+                  Save Question
+                </button>
               </div>
-            );
-          })
-        ) : (
-          <p className="text-gray-400 text-center mt-10">
-            No questions generated yet. Click the button below to generate
-            questions.
-          </p>
-        )}
-      </div>
+            </form>
+          </div>
 
-      <div className="absolute bottom-0 w-full flex flex-col items-center">
-        <div className="absolute bottom-3 bg-[#0B090A] h-18 w-18 rounded-full flex justify-center items-center">
-          <button
-            onClick={generateQuestions}
-            className="bg-white h-13 w-13 rounded-full"
-          />
-        </div>
+          <div className="h-screen p-6 overflow-y-scroll">
+            {loading ? (
+              <div className="flex justify-center items-center h-[60vh]">
+                <div className="w-10 h-10 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+              </div>
+            ) : questions.length > 0 ? (
+              questions.map((question, index) => {
+                const isLatest = index === 0;
 
-        <div className="bg-white h-[7vh] w-full" />
-      </div>
+                return (
+                  <div
+                    key={index}
+                    className={`rounded-xl mb-4 flex justify-center items-center overflow-hidden p-5 ${
+                      isLatest ? "bg-blue-900" : "bg-red-900"
+                    }`}
+                  >
+                    <p className="text-white font-semibold text-center w-full wrap-break-word">
+                      {question.question}
+                    </p>
+                  </div>
+                );
+              })
+            ) : (
+              <p className="text-gray-400 text-center mt-10">
+                No questions generated yet. Click the button below to generate
+                questions.
+              </p>
+            )}
+          </div>
+
+          <div className="absolute bottom-0 w-full flex flex-col items-center">
+            <div className="absolute bottom-3 bg-[#0B090A] h-18 w-18 rounded-full flex justify-center items-center">
+              <button
+                onClick={generateQuestions}
+                className="bg-white h-13 w-13 rounded-full"
+              />
+            </div>
+
+            <div className="bg-white h-[7vh] w-full" />
+          </div>
+        </>
+      )}
 
       <LeftSideBar
         leftSideBar={leftSideBar}

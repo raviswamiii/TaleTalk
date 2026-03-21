@@ -4,11 +4,6 @@ import { Routes, Route } from 'react-router-dom'
 import { GameOne } from './games/GameOne.jsx'
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Jokes } from './components/Jokes.jsx';
-import { Flirting } from './components/Flirting.jsx';
-import { Poetries } from './components/Poetries.jsx';
-import { Roasting } from './components/Roasting.jsx';
-import { PickupLines } from './components/PickupLines.jsx';
 
 export const App = () => {
   return (
@@ -16,12 +11,8 @@ export const App = () => {
     <ToastContainer />
       <Routes>
         {/* <Route path='/' element={<Home />} /> */}
-        <Route path='/' element={<GameOne />} />
-        <Route path='/jokes' element={<Jokes />} />
-        <Route path='/flirting' element={<Flirting />} />
-        <Route path='/poetries' element={<Poetries />} />
-        <Route path='/roasting' element={<Roasting />} />
-        <Route path='/pickup-lines' element={<PickupLines />} />
+        <Route path='/' element={<GameOne/>} />
+        <Route path='/gameOne/:categoryName' element={<GameOne />} />
       </Routes>
     </>
   )

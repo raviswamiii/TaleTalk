@@ -15,7 +15,7 @@ import { LeftSideBar } from "../components/LeftSideBar";
 export const Home = () => {
   const [leftSideBar, setLeftSideBar] = useState(false);
   const games = [
-    { id: 1, name: "Question Generator", img: game1, link: "/gameOne" },
+    { id: 1, name: "Question Generator", img: game1, link: "/" },
     { id: 2, name: "Game name", img: game2 },
     { id: 3, name: "Game name", img: game3 },
     { id: 4, name: "Game name", img: game4 },

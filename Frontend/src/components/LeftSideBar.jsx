@@ -9,9 +9,8 @@ export const LeftSideBar = ({
   setLeftSideBar,
   setShowCategoryPanel,
 }) => {
-
   const leftSideBarRef = useRef();
-  const { categories } = useContext(GameOneContext);
+  const { categories, setCategoryName } = useContext(GameOneContext);
   const [search, setSearch] = useState("");
 
   useEffect(() => {
@@ -32,7 +31,7 @@ export const LeftSideBar = ({
   }, [leftSideBar, setLeftSideBar]);
 
   const filteredCategories = categories.filter((item) =>
-    item.category.toLowerCase().includes(search.toLowerCase())
+    item.category.toLowerCase().includes(search.toLowerCase()),
   );
 
   return (
@@ -66,10 +65,11 @@ export const LeftSideBar = ({
       </div>
 
       {filteredCategories.map((item, index) => (
-        <Link to={`/category/${item.category}`} key={item._id || index}>
+        <Link to={`/gameOne/${item.category}`} key={item._id || index}>
           <p
             onClick={() => {
               setLeftSideBar(false);
+              setCategoryName(item.category);
             }}
             className="text-gray-300 p-3 border-b border-white/5 hover:bg-white/5 hover:text-white transition"
           >
