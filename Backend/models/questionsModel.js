@@ -2,15 +2,15 @@ import mongoose from "mongoose";
 
 const questionsSchema = new mongoose.Schema(
   {
-    question: {
+    category: {
       type: String,
       required: true,
       unique: true,
     },
 
-    category: {
+    question: {
       type: String,
-      required: true,
+      unique: true,
     },
   },
   { timestamps: true },
