@@ -26,7 +26,7 @@ export const AddQuestionsPopup = () => {
       });
 
       if (response.data.success) {
-        setNewQuestions((prev) => [...prev, response.data.data]);
+        setNewQuestions((prev) => [...prev, addQuestion.trim()]);
         setAddQuestion("");
         setBlurScreen(false);
         toast.success("Question added successfully");

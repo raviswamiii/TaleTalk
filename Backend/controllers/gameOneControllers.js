@@ -1,4 +1,4 @@
-import gameOneModel from "../models/questionsModel.js";
+import questionsModel from "../models/questionsModel.js";
 
 let cache = {};
 
@@ -96,7 +96,7 @@ export const addCategory = async (req, res) => {
       });
     }
 
-    const existingCategory = await gameOneModel.findOne({
+    const existingCategory = await questionsModel.findOne({
       category: category.trim(),
     });
 
@@ -107,7 +107,7 @@ export const addCategory = async (req, res) => {
       });
     }
 
-    const newCategory = new gameOneModel({
+    const newCategory = new questionsModel({
       category: category.trim(),
     });
 
@@ -129,7 +129,7 @@ export const addCategory = async (req, res) => {
 
 export const getCategories = async (req, res) => {
   try {
-    const categories = await gameOneModel.find().sort({ createdAt: -1 });
+    const categories = await questionsModel.find().sort({ createdAt: -1 });
     return res.status(200).json({
       success: true,
       message: "Categories fetched successfully",
@@ -160,9 +160,9 @@ export const addQuestion = async (req, res) => {
       });
     }
 
-    const updatedDocument = await gameOneModel.findOneAndUpdate(
+    const updatedDocument = await questionsModel.findOneAndUpdate(
       { category: category.trim() },
-      { $push: { question: question.trim() } },
+      { $addToSet: { questions: question.trim() } },
       { returnDocument: "after", upsert: true },
     );
     return res.status(201).json({
@@ -175,6 +175,33 @@ export const addQuestion = async (req, res) => {
       success: false,
       message: "Error adding question",
       error: error.message,
+    });
+  }
+};
+
+export const getQuestionsByCategory = async (req, res) => {
+  try {
+    const { category } = req.params;
+
+    const data = await questionsModel.findOne({
+  category: { $regex: `^${category}$`, $options: "i" },
+});
+
+    if (!data) {
+      return res.json({
+        success: false,
+        message: "No category found",
+      });
+    }
+
+    res.json({
+      success: true,
+      questions: data.questions || [],
+    });
+  } catch (error) {
+    res.json({
+      success: false,
+      message: error.message,
     });
   }
 };

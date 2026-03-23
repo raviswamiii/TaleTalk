@@ -14,7 +14,7 @@ export const GameOne = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [leftSideBar, setLeftSideBar] = useState(false);
   const [showCategoryPanel, setShowCategoryPanel] = useState(false);
-  const { categoryName, setBlurScreen, newQuestions } = useContext(GameOneContext);
+  const { categoryName, setBlurScreen, newQuestions, setNewQuestions } = useContext(GameOneContext);
   const [loading, setLoading] = useState(false);
 
   const backendURL = import.meta.env.VITE_BACKEND_URL;
@@ -81,8 +81,38 @@ export const GameOne = () => {
   //   }
   // }, [categoryName]);
 
+  const fetchQuestions = async () => {
+  if (!categoryName || categoryName.trim() === "") {
+    console.log("Category is missing");
+    return;
+  }
+
+  try {
+    const response = await axios.get(
+      `${backendURL}/gameOne/getQuestions/${encodeURIComponent(categoryName.trim())}`
+    );
+
+
+    if (response.data.success) {
+      setNewQuestions(response.data.questions || []);
+      setQuestions([]);
+      setCurrentIndex(0);
+    } else {
+      console.log(response.data.message);
+    }
+  } catch (error) {
+    console.error(error.response?.data || error.message);
+  }
+};
+
+  useEffect(() => {
+  if (categoryName) {
+    fetchQuestions();
+  }
+}, [categoryName]);
+
   const generateQuestions = () => {
-    if (newQuestions.length === 0) {
+    if (!newQuestions || newQuestions.length === 0) {
       toast.error("No questions available. Please add questions first!");
       return;
     }
@@ -140,7 +170,7 @@ export const GameOne = () => {
                     }`}
                   >
                     <p className="text-white font-semibold text-center w-full wrap-break-word">
-                      {question.question}
+                      {question}
                     </p>
                   </div>
                 );
