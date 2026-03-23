@@ -2,10 +2,11 @@ import mongoose from "mongoose";
 
 const questionsSchema = new mongoose.Schema(
   {
-    // question: {
-    //   type: String,
-    //   required: true,
-    // },
+    question: {
+      type: String,
+      required: true,
+      unique: true,
+    },
 
     category: {
       type: String,

@@ -65,7 +65,7 @@ let cache = {};
 
 //     const questions = await gameOneModel.aggregate([
 //       { $match: { category } },
-//       { $sample: { size: 10 } }, 
+//       { $sample: { size: 10 } },
 //     ]);
 
 //     cache[category] = questions;
@@ -96,28 +96,28 @@ export const addCategory = async (req, res) => {
       });
     }
 
-      const existingCategory = await gameOneModel.findOne({
-        category: category.trim(),
+    const existingCategory = await gameOneModel.findOne({
+      category: category.trim(),
+    });
+
+    if (existingCategory) {
+      return res.status(400).json({
+        success: false,
+        message: "Category already exists",
       });
+    }
 
-      if (existingCategory) {
-        return res.status(400).json({
-          success: false,
-          message: "Category already exists",
-        });
-      }
+    const newCategory = new gameOneModel({
+      category: category.trim(),
+    });
 
-      const newCategory = new gameOneModel({
-        category: category.trim(),
-      });
+    await newCategory.save();
 
-      await newCategory.save();
-
-      return res.status(201).json({
-        success: true,
-        message: "Category added successfully",
-        data: newCategory,
-      });
+    return res.status(201).json({
+      success: true,
+      message: "Category added successfully",
+      data: newCategory,
+    });
   } catch (error) {
     return res.status(500).json({
       success: false,
@@ -125,7 +125,7 @@ export const addCategory = async (req, res) => {
       error: error.message,
     });
   }
-}
+};
 
 export const getCategories = async (req, res) => {
   try {
@@ -142,4 +142,39 @@ export const getCategories = async (req, res) => {
       error: error.message,
     });
   }
-}
+};
+
+export const addQuestion = async (req, res) => {
+  try {
+    const { question, category } = req.body;
+    if (!question || !question.trim()) {
+      return res.status(400).json({
+        success: false,
+        message: "Question is required",
+      });
+    }
+    if (!category || !category.trim()) {
+      return res.status(400).json({
+        success: false,
+        message: "Category is required",
+      });
+    }
+
+    const updatedDocument = await gameOneModel.findOneAndUpdate(
+      { category: category.trim() },
+      { $push: { question: question.trim() } },
+      { returnDocument: "after", upsert: true },
+    );
+    return res.status(201).json({
+      success: true,
+      message: "Question added successfully",
+      data: updatedDocument,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Error adding question",
+      error: error.message,
+    });
+  }
+};
