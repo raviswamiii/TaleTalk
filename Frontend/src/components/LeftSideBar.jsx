@@ -5,6 +5,7 @@ import { FcSearch } from "react-icons/fc";
 import { GameOneContext } from "../context/GameOneContext";
 import { RiDeleteBin6Fill } from "react-icons/ri";
 import { MdEdit } from "react-icons/md";
+import { HiDotsVertical } from "react-icons/hi";
 
 export const LeftSideBar = ({
   leftSideBar,
@@ -13,30 +14,10 @@ export const LeftSideBar = ({
 }) => {
   const leftSideBarRef = useRef();
   const { categories, setCategoryName } = useContext(GameOneContext);
-
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState(null);
-  const [isLongPress, setIsLongPress] = useState(false);
-
-  const timerRef = useRef(null);
   const actionRef = useRef(null);
 
-  // 🔹 Long Press Start
-  const handlePressStart = (category) => {
-    setIsLongPress(false);
-
-    timerRef.current = setTimeout(() => {
-      setActiveCategory(category);
-      setIsLongPress(true);
-    }, 600);
-  };
-
-  // 🔹 Long Press End
-  const handlePressEnd = () => {
-    clearTimeout(timerRef.current);
-  };
-
-  // 🔹 Close sidebar on outside click
   useEffect(() => {
     const handleClickOutside = (e) => {
       // 🔹 Close sidebar
@@ -61,7 +42,6 @@ export const LeftSideBar = ({
     };
   }, [leftSideBar]);
 
-  // 🔹 Filter categories
   const filteredCategories = categories.filter((item) =>
     item.category.toLowerCase().includes(search.toLowerCase()),
   );
@@ -74,7 +54,6 @@ export const LeftSideBar = ({
       border-r border-white/10 shadow-2xl
       ${leftSideBar ? "translate-x-0" : "-translate-x-[100vw]"}`}
     >
-      {/* 🔹 Search Bar */}
       <div className="p-4 flex items-center gap-3 border-b border-white/10 bg-[#161214]">
         <div className="relative w-full">
           <FcSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-lg opacity-80" />
@@ -97,32 +76,27 @@ export const LeftSideBar = ({
         />
       </div>
 
-      {/* 🔹 Categories */}
       {filteredCategories.map((item, index) => (
         <div key={item._id || index} className="relative">
           <Link to={`/gameOne/${item.category}`}>
-            <p
-              onClick={(e) => {
-                if (isLongPress) {
-                  e.preventDefault();
-                  return;
-                }
-
+            <div
+              onClick={() => {
                 setLeftSideBar(false);
                 setCategoryName(item.category);
               }}
-              onMouseDown={() => handlePressStart(item.category)}
-              onMouseUp={handlePressEnd}
-              onMouseLeave={handlePressEnd}
-              onTouchStart={() => handlePressStart(item.category)}
-              onTouchEnd={handlePressEnd}
-              className="text-gray-300 p-3 border-b border-white/5 hover:bg-white/5 hover:text-white transition cursor-pointer"
+              className="flex items-center justify-between text-gray-300 p-3 border-b border-white/5 hover:bg-white/5 hover:text-white transition cursor-pointer"
             >
-              {item.category}
-            </p>
+              <p>{item.category}</p>
+              <HiDotsVertical
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setActiveCategory(item.category);
+                }}
+              />
+            </div>
           </Link>
 
-          {/* 🔥 Action Buttons (only for active category) */}
           {activeCategory === item.category && (
             <div
               ref={actionRef}
