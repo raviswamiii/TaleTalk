@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { SiReaddotcv } from "react-icons/si";
 import { FcSearch } from "react-icons/fc";
 import { GameOneContext } from "../context/GameOneContext";
+import { RiDeleteBin6Fill } from "react-icons/ri";
+import { MdEdit } from "react-icons/md";
 
 export const LeftSideBar = ({
   leftSideBar,
@@ -11,10 +13,33 @@ export const LeftSideBar = ({
 }) => {
   const leftSideBarRef = useRef();
   const { categories, setCategoryName } = useContext(GameOneContext);
-  const [search, setSearch] = useState("");
 
+  const [search, setSearch] = useState("");
+  const [activeCategory, setActiveCategory] = useState(null);
+  const [isLongPress, setIsLongPress] = useState(false);
+
+  const timerRef = useRef(null);
+  const actionRef = useRef(null);
+
+  // 🔹 Long Press Start
+  const handlePressStart = (category) => {
+    setIsLongPress(false);
+
+    timerRef.current = setTimeout(() => {
+      setActiveCategory(category);
+      setIsLongPress(true);
+    }, 600);
+  };
+
+  // 🔹 Long Press End
+  const handlePressEnd = () => {
+    clearTimeout(timerRef.current);
+  };
+
+  // 🔹 Close sidebar on outside click
   useEffect(() => {
-    const handleleftSideBarClick = (e) => {
+    const handleClickOutside = (e) => {
+      // 🔹 Close sidebar
       if (
         leftSideBar &&
         leftSideBarRef.current &&
@@ -22,26 +47,34 @@ export const LeftSideBar = ({
       ) {
         setLeftSideBar(false);
       }
+
+      // 🔥 Close action buttons
+      if (actionRef.current && !actionRef.current.contains(e.target)) {
+        setActiveCategory(null);
+      }
     };
 
-    document.addEventListener("mousedown", handleleftSideBarClick);
+    document.addEventListener("mousedown", handleClickOutside);
+
     return () => {
-      document.removeEventListener("mousedown", handleleftSideBarClick);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [leftSideBar, setLeftSideBar]);
+  }, [leftSideBar]);
 
+  // 🔹 Filter categories
   const filteredCategories = categories.filter((item) =>
     item.category.toLowerCase().includes(search.toLowerCase()),
   );
 
   return (
     <div
-      className={`bg-[#0B090A] h-screen absolute z-20 w-[70vw] 
-      transform transition-transform duration-300 ease-in-out 
+      ref={leftSideBarRef}
+      className={`bg-[#0B090A] h-screen absolute z-20 w-[70vw]
+      transform transition-transform duration-300 ease-in-out
       border-r border-white/10 shadow-2xl
       ${leftSideBar ? "translate-x-0" : "-translate-x-[100vw]"}`}
-      ref={leftSideBarRef}
     >
+      {/* 🔹 Search Bar */}
       <div className="p-4 flex items-center gap-3 border-b border-white/10 bg-[#161214]">
         <div className="relative w-full">
           <FcSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-lg opacity-80" />
@@ -60,22 +93,53 @@ export const LeftSideBar = ({
 
         <SiReaddotcv
           onClick={() => setShowCategoryPanel(true)}
-          className="text-white text-2xl"
+          className="text-white text-2xl cursor-pointer"
         />
       </div>
 
+      {/* 🔹 Categories */}
       {filteredCategories.map((item, index) => (
-        <Link to={`/gameOne/${item.category}`} key={item._id || index}>
-          <p
-            onClick={() => {
-              setLeftSideBar(false);
-              setCategoryName(item.category);
-            }}
-            className="text-gray-300 p-3 border-b border-white/5 hover:bg-white/5 hover:text-white transition"
-          >
-            {item.category}
-          </p>
-        </Link>
+        <div key={item._id || index} className="relative">
+          <Link to={`/gameOne/${item.category}`}>
+            <p
+              onClick={(e) => {
+                if (isLongPress) {
+                  e.preventDefault();
+                  return;
+                }
+
+                setLeftSideBar(false);
+                setCategoryName(item.category);
+              }}
+              onMouseDown={() => handlePressStart(item.category)}
+              onMouseUp={handlePressEnd}
+              onMouseLeave={handlePressEnd}
+              onTouchStart={() => handlePressStart(item.category)}
+              onTouchEnd={handlePressEnd}
+              className="text-gray-300 p-3 border-b border-white/5 hover:bg-white/5 hover:text-white transition cursor-pointer"
+            >
+              {item.category}
+            </p>
+          </Link>
+
+          {/* 🔥 Action Buttons (only for active category) */}
+          {activeCategory === item.category && (
+            <div
+              ref={actionRef}
+              className="absolute right-4 top-2 flex flex-col gap-2 bg-black w-[40vw] rounded-2xl p-4 shadow-lg z-30"
+            >
+              <div className="text-gray-300 flex items-center gap-3 cursor-pointer hover:text-white">
+                <MdEdit />
+                <p>Rename</p>
+              </div>
+
+              <div className="text-red-500 flex items-center gap-3 cursor-pointer hover:text-red-400">
+                <RiDeleteBin6Fill />
+                <p>Delete</p>
+              </div>
+            </div>
+          )}
+        </div>
       ))}
     </div>
   );

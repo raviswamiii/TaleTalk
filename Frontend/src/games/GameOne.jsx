@@ -14,102 +14,44 @@ export const GameOne = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [leftSideBar, setLeftSideBar] = useState(false);
   const [showCategoryPanel, setShowCategoryPanel] = useState(false);
-  const { categoryName, setBlurScreen, newQuestions, setNewQuestions } = useContext(GameOneContext);
+  const { categoryName, setBlurScreen, newQuestions, setNewQuestions } =
+    useContext(GameOneContext);
   const [loading, setLoading] = useState(false);
 
   const backendURL = import.meta.env.VITE_BACKEND_URL;
-
-  // const addNewQuestion = async (e) => {
-  //   e.preventDefault();
-
-  //   if (!addQuestion.trim()) {
-  //     setError("Question cannot be empty");
-  //     return;
-  //   }
-
-  //   try {
-  //     const response = await axios.post(`${backendURL}/gameOne/addQuestion`, {
-  //       question: addQuestion.trim(),
-  //       category: categoryName.trim(),
-  //     });
-
-  //     if (response.data.success) {
-  //       setNewQuestions((prev) => [...prev, response.data.data]);
-  //       setAddQuestion("");
-  //       setBlurScreen(false);
-  //       toast.success("Question added successfully");
-  //     } else {
-  //       toast.error("Failed to add question");
-  //     }
-  //   } catch (error) {
-  //     console.error(
-  //       "Error adding question:",
-  //       error.response?.data || error.message,
-  //     );
-  //   }
-  // };
-
-  // const fetchQuestions = async () => {
-  //   if (!categoryName || categoryName.trim() === "") {
-  //     console.log("Category is missing");
-  //     return;
-  //   }
-
-  //   try {
-  //     setLoading(true);
-
-  //     const response = await axios.get(
-  //       `${backendURL}/gameOne/getQuestions/${encodeURIComponent(categoryName)}`,
-  //     );
-
-  //     if (response.data.success) {
-  //       setNewQuestions(response.data.data);
-  //       setCurrentIndex(0);
-  //     } else {
-  //       console.log("Failed to fetch questions:", response.data.message);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching questions:", error.response?.data?.message);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   if (categoryName) {
-  //     fetchQuestions();
-  //   }
-  // }, [categoryName]);
-
+  
   const fetchQuestions = async () => {
-  if (!categoryName || categoryName.trim() === "") {
-    console.log("Category is missing");
-    return;
-  }
-
-  try {
-    const response = await axios.get(
-      `${backendURL}/gameOne/getQuestions/${encodeURIComponent(categoryName.trim())}`
-    );
-
-
-    if (response.data.success) {
-      setNewQuestions(response.data.questions || []);
-      setQuestions([]);
-      setCurrentIndex(0);
-    } else {
-      console.log(response.data.message);
+    if (!categoryName || categoryName.trim() === "") {
+      console.log("Category is missing");
+      return;
     }
-  } catch (error) {
-    console.error(error.response?.data || error.message);
-  }
-};
+
+    try {
+      setLoading(true);
+
+      const response = await axios.get(
+        `${backendURL}/gameOne/getQuestions/${encodeURIComponent(categoryName.trim())}`,
+      );
+
+      if (response.data.success) {
+        setNewQuestions(response.data.questions || []);
+        setQuestions([]);
+        setCurrentIndex(0);
+      } else {
+        console.log(response.data.message);
+      }
+    } catch (error) {
+      console.error(error.response?.data || error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-  if (categoryName) {
-    fetchQuestions();
-  }
-}, [categoryName]);
+    if (categoryName) {
+      fetchQuestions();
+    }
+  }, [categoryName]);
 
   const generateQuestions = () => {
     if (!newQuestions || newQuestions.length === 0) {
