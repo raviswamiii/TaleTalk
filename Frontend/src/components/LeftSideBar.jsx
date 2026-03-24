@@ -3,10 +3,8 @@ import { Link } from "react-router-dom";
 import { SiReaddotcv } from "react-icons/si";
 import { FcSearch } from "react-icons/fc";
 import { GameOneContext } from "../context/GameOneContext";
-import { RiDeleteBin6Fill } from "react-icons/ri";
-import { MdEdit } from "react-icons/md";
 import { HiDotsVertical } from "react-icons/hi";
-import { RxCross2 } from "react-icons/rx";
+import { CategoryActionButtons } from "./CategoryActionButtons";
 
 export const LeftSideBar = ({
   leftSideBar,
@@ -14,25 +12,18 @@ export const LeftSideBar = ({
   setShowCategoryPanel,
 }) => {
   const leftSideBarRef = useRef();
-  const { categories, setCategoryName } = useContext(GameOneContext);
+  const { categories, setCategoryName, activeCategory, setActiveCategory } =
+    useContext(GameOneContext);
   const [search, setSearch] = useState("");
-  const [activeCategory, setActiveCategory] = useState(null);
-  const actionRef = useRef(null);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
-      // 🔹 Close sidebar
       if (
         leftSideBar &&
         leftSideBarRef.current &&
         !leftSideBarRef.current.contains(e.target)
       ) {
         setLeftSideBar(false);
-      }
-
-      // 🔥 Close action buttons
-      if (actionRef.current && !actionRef.current.contains(e.target)) {
-        setActiveCategory(null);
       }
     };
 
@@ -98,27 +89,7 @@ export const LeftSideBar = ({
             </div>
           </Link>
 
-          {activeCategory === item.category && (
-            <div
-              ref={actionRef}
-              className="absolute right-9 top-2 flex flex-col gap-2 bg-black w-[42vw] rounded-2xl p-4 shadow-lg z-30"
-            >
-              <RxCross2
-                onClick={() => setActiveCategory(null)}
-                className="text-gray-300 absolute right-3 top-3"
-              />
-
-              <div className="text-gray-300 flex items-center gap-3 cursor-pointer hover:text-white">
-                <MdEdit />
-                <p>Rename</p>
-              </div>
-
-              <div className="text-red-500 flex items-center gap-3 cursor-pointer hover:text-red-400">
-                <RiDeleteBin6Fill />
-                <p>Delete</p>
-              </div>
-            </div>
-          )}
+          {activeCategory === item.category && <CategoryActionButtons />}
         </div>
       ))}
     </div>

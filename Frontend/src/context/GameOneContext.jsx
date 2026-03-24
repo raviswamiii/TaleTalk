@@ -7,6 +7,7 @@ export const GameOneContextProvider = ({ children }) => {
   const [categories, setCategories] = useState([]);
   const [blurScreen, setBlurScreen] = useState(false);
   const [newQuestions, setNewQuestions] = useState([]);
+  const [activeCategory, setActiveCategory] = useState(null);
 
   const value = {
     categoryName,
@@ -17,6 +18,8 @@ export const GameOneContextProvider = ({ children }) => {
     setBlurScreen,
     newQuestions,
     setNewQuestions,
+    activeCategory,
+    setActiveCategory,
   };
   return (
     <GameOneContext.Provider value={value}>{children}</GameOneContext.Provider>
