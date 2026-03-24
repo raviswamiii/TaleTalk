@@ -6,6 +6,7 @@ import { GameOneContext } from "../context/GameOneContext";
 import { RiDeleteBin6Fill } from "react-icons/ri";
 import { MdEdit } from "react-icons/md";
 import { HiDotsVertical } from "react-icons/hi";
+import { RxCross2 } from "react-icons/rx";
 
 export const LeftSideBar = ({
   leftSideBar,
@@ -100,8 +101,10 @@ export const LeftSideBar = ({
           {activeCategory === item.category && (
             <div
               ref={actionRef}
-              className="absolute right-4 top-2 flex flex-col gap-2 bg-black w-[40vw] rounded-2xl p-4 shadow-lg z-30"
+              className="absolute right-9 top-2 flex flex-col gap-2 bg-black w-[42vw] rounded-2xl p-4 shadow-lg z-30"
             >
+              <RxCross2 onClick={() => setActiveCategory(null)} className="text-gray-300 absolute right-3 top-3"/>
+
               <div className="text-gray-300 flex items-center gap-3 cursor-pointer hover:text-white">
                 <MdEdit />
                 <p>Rename</p>
