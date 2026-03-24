@@ -84,6 +84,7 @@ export const LeftSideBar = ({
                   e.preventDefault();
                   e.stopPropagation();
                   setActiveCategory(item.category);
+                  setCategoryName(item.category)
                 }}
               />
             </div>

@@ -3,10 +3,37 @@ import { RiDeleteBin6Fill } from "react-icons/ri";
 import { MdEdit } from "react-icons/md";
 import { RxCross2 } from "react-icons/rx";
 import { GameOneContext } from "../context/GameOneContext";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 export const CategoryActionButtons = () => {
-  const { setActiveCategory } = useContext(GameOneContext);
+  const { setActiveCategory, categoryName, setCategories } =
+    useContext(GameOneContext);
   const actionRef = useRef(null);
+  const backendURL = import.meta.env.VITE_BACKEND_URL;
+
+  const deleteCategory = async () => {
+    try {
+      if (!categoryName || !categoryName.trim()) {
+        toast.error("No category selected");
+        return;
+      }
+      const response = await axios.delete(
+        `${backendURL}/gameOne/deleteCategory/${encodeURIComponent(categoryName.trim())}`,
+      );
+
+      if (response.data.success) {
+        setCategories((prev) =>
+          prev.filter((item) => item.category !== categoryName),
+        );
+        setActiveCategory(null);
+      } else {
+        console.log(response.data.message);
+      }
+    } catch (error) {
+      console.error(error.response?.data || error.message);
+    }
+  };
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -36,7 +63,10 @@ export const CategoryActionButtons = () => {
         <p>Rename</p>
       </div>
 
-      <div className="text-red-500 flex items-center gap-3 cursor-pointer hover:text-red-400">
+      <div
+        onClick={deleteCategory}
+        className="text-red-500 flex items-center gap-3 cursor-pointer hover:text-red-400"
+      >
         <RiDeleteBin6Fill />
         <p>Delete</p>
       </div>
