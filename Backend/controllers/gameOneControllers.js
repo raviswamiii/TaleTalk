@@ -13,8 +13,10 @@ export const addCategory = async (req, res) => {
       });
     }
 
+    const normalizedCategory = category.trim().toLowerCase();
+
     const existingCategory = await questionsModel.findOne({
-      category: category.trim(),
+      category: normalizedCategory,
     });
 
     if (existingCategory) {
@@ -26,7 +28,7 @@ export const addCategory = async (req, res) => {
 
     const newCategory = new questionsModel({
       category: category.trim(),
-      questions: []
+      questions: [],
     });
 
     await newCategory.save();
@@ -152,7 +154,6 @@ export const deleteCategory = async (req, res) => {
       success: true,
       message: "Category deleted successfully",
     });
-
   } catch (error) {
     return res.status(500).json({
       success: false,

@@ -6,11 +6,13 @@ const questionsSchema = new mongoose.Schema(
       type: String,
       required: true,
       unique: true,
+      lowercase: true,
+      trim: true,
     },
 
     questions: {
-      type: [String],   
-      default: [], 
+      type: [String],
+      default: [],
     },
   },
   { timestamps: true },
