@@ -26,6 +26,7 @@ export const addCategory = async (req, res) => {
 
     const newCategory = new questionsModel({
       category: category.trim(),
+      questions: []
     });
 
     await newCategory.save();

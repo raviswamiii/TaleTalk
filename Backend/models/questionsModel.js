@@ -8,12 +8,10 @@ const questionsSchema = new mongoose.Schema(
       unique: true,
     },
 
-    questions: [
-      {
-        type: String,
-        unique: true,
-      },
-    ],
+    questions: {
+      type: [String],   
+      default: [], 
+    },
   },
   { timestamps: true },
 );
