@@ -3,6 +3,7 @@ import { createContext, useState } from "react";
 export const GameOneContext = createContext();
 
 export const GameOneContextProvider = ({ children }) => {
+  const [categoryInput, setCategoryInput] = useState("")
   const [categoryName, setCategoryName] = useState("");
   const [categories, setCategories] = useState([]);
   const [blurScreen, setBlurScreen] = useState(false);
@@ -20,6 +21,8 @@ export const GameOneContextProvider = ({ children }) => {
     setNewQuestions,
     activeCategory,
     setActiveCategory,
+    categoryInput,
+    setCategoryInput
   };
   return (
     <GameOneContext.Provider value={value}>{children}</GameOneContext.Provider>

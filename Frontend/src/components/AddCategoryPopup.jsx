@@ -10,24 +10,25 @@ export const AddCategoryPopup = ({
   showCategoryPanel,
   setShowCategoryPanel,
 }) => {
-  const { categoryName, setCategoryName, setCategories } = useContext(GameOneContext);
+  const { categoryName, setCategoryName, categoryInput, setCategoryInput, setCategories } = useContext(GameOneContext);
   const backendURL = import.meta.env.VITE_BACKEND_URL;
 
   const addCategory = async (e) => {
     e.preventDefault();
 
     try {
-      if (!categoryName.trim()) {
+      if (!categoryInput.trim()) {
         return;
       }
 
       const response = await axios.post(`${backendURL}/gameOne/addCategory`, {
-        category: categoryName.trim(),
+        category: categoryInput.trim(),
       });
 
       if (response.data.success) {
         setCategories((prev) => [...prev, response.data.data]);
-        setCategoryName("");
+        setCategoryName(categoryInput.trim());
+        setCategoryInput("");
         setShowCategoryPanel(false);
         
       } else {
@@ -84,8 +85,8 @@ export const AddCategoryPopup = ({
           )} */}
 
         <input
-          value={categoryName}
-          onChange={(e) => setCategoryName(e.target.value)}
+          value={categoryInput}
+          onChange={(e) => setCategoryInput(e.target.value)}
           type="text"
           placeholder="Enter category name..."
           className="w-full px-4 py-3 rounded-xl 
