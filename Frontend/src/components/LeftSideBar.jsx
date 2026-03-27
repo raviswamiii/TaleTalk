@@ -79,14 +79,14 @@ export const LeftSideBar = ({
               className="flex items-center justify-between text-gray-300 p-3 border-b border-white/5 hover:bg-white/5 hover:text-white transition cursor-pointer"
             >
               <p className="capitalize">{item.category}</p>
-              <HiDotsVertical
+              {/* <HiDotsVertical
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
                   setActiveCategory(item.category);
                   setCategoryName(item.category)
                 }}
-              />
+              /> */}
             </div>
           </Link>
 
